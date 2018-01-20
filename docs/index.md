@@ -86,7 +86,6 @@ TODO: add more descriptions
 Libs also needed
 ===
 * CustomLogger (latest version)
-* KalmanLocationManager (latest version)
 * ...
 
-TODO: note about libs we import (a lot of Rx ones) and requirements (Java 8) 
+TODO: note about libs we import and requirements (Java 8) 
