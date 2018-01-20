@@ -4,7 +4,7 @@
 
 [![GitHub license](https://img.shields.io/github/license/intari/AndroidToolboxCore.svg)](https://github.com/intari/AndroidToolboxCore/blob/master/LICENSE)
 [![Release](https://jitpack.io/v/net.intari/AndroidToolboxCore.svg)](https://jitpack.io/#net.intari/AndroidToolboxCore)
-<a href='https://travis-ci.org/intari/AndroidToolbox/builds'><img src='https://api.travis-ci.org/intari/AndroidToolboxCore.svg?branch=master'></a>
+<a href='https://travis-ci.org/intari/AndroidToolboxCore/builds'><img src='https://api.travis-ci.org/intari/AndroidToolboxCore.svg?branch=master'></a>
 [![GitHub issues](https://img.shields.io/github/issues/intari/AndroidToolboxCore.svg)](https://github.com/intari/AndroidToolboxCore/issues)
 [![GitHub forks](https://img.shields.io/github/forks/intari/AndroidToolboxCore.svg)](https://github.com/intari/AndroidToolboxCore/network)
 [![GitHub stars](https://img.shields.io/github/stars/intari/AndroidToolboxCore.svg)](https://github.com/intari/AndroidToolboxCore/stargazers)
@@ -36,4 +36,5 @@ dependencies {
 
 
 TODO: add more descriptions
+
 TODO: note about libs we import ) and requirements (Java 8) 
