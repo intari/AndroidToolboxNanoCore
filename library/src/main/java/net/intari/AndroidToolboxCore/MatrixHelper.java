@@ -3,7 +3,7 @@
  *
  */
 
-package net.intari.AndroidToolbox;
+package net.intari.AndroidToolboxCore;
 
 /**
  * Created by Dmitriy Kazimirov, e-mail:dmitriy.kazimirov@viorsan.com on 11.08.17.

@@ -1,4 +1,4 @@
-package net.intari.AndroidToolbox;
+package net.intari.AndroidToolboxCore;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,13 +10,10 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.databinding.ObservableField;
 import android.location.Location;
 import android.opengl.GLES20;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Looper;
-import android.support.annotation.NonNull;
 import android.view.ContextThemeWrapper;
 
 import com.amplitude.api.Amplitude;
@@ -38,7 +35,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import io.reactivex.Observable;
 
 /**
  * Support utils for my projects
@@ -491,28 +487,6 @@ public class Utils {
             }
         }
         return false;
-    }
-
-    /**
-     * Converts DataBinding's ObservableField  to RxJava2's Observable
-     * see https://habrahabr.ru/post/328512/
-     * @param observableField
-     * @param <T>
-     * @return Observable (RxJava2)
-     */
-    public static <T> Observable<T> toObservable(@NonNull final ObservableField<T> observableField) {
-
-        return Observable.fromPublisher(asyncEmitter -> {
-            final android.databinding.Observable.OnPropertyChangedCallback callback = new android.databinding.Observable.OnPropertyChangedCallback() {
-                @Override
-                public void onPropertyChanged(android.databinding.Observable dataBindingObservable, int propertyId) {
-                    if (dataBindingObservable == observableField) {
-                        asyncEmitter.onNext(observableField.get());
-                    }
-                }
-            };
-            observableField.addOnPropertyChangedCallback(callback);
-        });
     }
 
     /**

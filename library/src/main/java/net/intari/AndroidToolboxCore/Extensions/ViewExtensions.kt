@@ -1,4 +1,4 @@
-package net.intari.AndroidToolbox.Extensions
+package net.intari.AndroidToolboxCore.Extensions
 
 import android.view.View
 

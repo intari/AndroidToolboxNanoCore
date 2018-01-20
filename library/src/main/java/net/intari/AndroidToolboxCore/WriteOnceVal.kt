@@ -1,4 +1,4 @@
-package net.intari.AndroidToolbox
+package net.intari.AndroidToolboxCore
 
 import java.util.concurrent.atomic.AtomicReference
 

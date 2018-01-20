@@ -3,7 +3,7 @@
  *
  */
 
-package net.intari.AndroidToolbox;
+package net.intari.AndroidToolboxCore;
 
 import net.intari.CustomLogger.CustomLog;
 

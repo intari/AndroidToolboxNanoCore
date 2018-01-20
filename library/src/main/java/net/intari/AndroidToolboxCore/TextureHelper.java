@@ -3,7 +3,7 @@
  *
  */
 
-package net.intari.AndroidToolbox;
+package net.intari.AndroidToolboxCore;
 
 import android.content.Context;
 import android.graphics.Bitmap;

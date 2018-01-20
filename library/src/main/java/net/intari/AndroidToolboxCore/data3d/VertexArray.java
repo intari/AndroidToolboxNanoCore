@@ -3,7 +3,7 @@
  *
  */
 
-package net.intari.AndroidToolbox.data3d;
+package net.intari.AndroidToolboxCore.data3d;
 
 import android.opengl.GLES20;
 
@@ -11,7 +11,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-import static net.intari.AndroidToolbox.Constants.BYTES_PER_FLOAT;
+import static net.intari.AndroidToolboxCore.Constants.BYTES_PER_FLOAT;
 
 /**
  * Created by Dmitriy Kazimirov, e-mail:dmitriy.kazimirov@viorsan.com on 12.08.17.

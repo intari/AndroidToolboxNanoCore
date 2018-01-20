@@ -3,9 +3,7 @@
  *
  */
 
-package net.intari.AndroidToolbox;
-
-import android.util.FloatMath;
+package net.intari.AndroidToolboxCore;
 
 import net.intari.CustomLogger.CustomLog;
 

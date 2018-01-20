@@ -1,17 +1,17 @@
-# Android Toolbox
+# Android Toolbox (Core functions)
 
-[![Twitter](https://img.shields.io/twitter/url/https/github.com/intari/AndroidToolbox.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fintari%2FAndroidToolbox)
+[![Twitter](https://img.shields.io/twitter/url/https/github.com/intari/AndroidToolboxCore.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fintari%2FAndroidToolboxCore)
 
-[![GitHub license](https://img.shields.io/github/license/intari/AndroidToolbox.svg)](https://github.com/intari/AndroidToolbox/blob/master/LICENSE)
-[![Release](https://jitpack.io/v/net.intari/AndroidToolbox.svg)](https://jitpack.io/#net.intari/AndroidToolbox)
-<a href='https://travis-ci.org/intari/AndroidToolbox/builds'><img src='https://api.travis-ci.org/intari/AndroidToolbox.svg?branch=master'></a>
-[![GitHub issues](https://img.shields.io/github/issues/intari/AndroidToolbox.svg)](https://github.com/intari/AndroidToolbox/issues)
-[![GitHub forks](https://img.shields.io/github/forks/intari/AndroidToolbox.svg)](https://github.com/intari/AndroidToolbox/network)
-[![GitHub stars](https://img.shields.io/github/stars/intari/AndroidToolbox.svg)](https://github.com/intari/AndroidToolbox/stargazers)
+[![GitHub license](https://img.shields.io/github/license/intari/AndroidToolboxCore.svg)](https://github.com/intari/AndroidToolboxCore/blob/master/LICENSE)
+[![Release](https://jitpack.io/v/net.intari/AndroidToolboxCore.svg)](https://jitpack.io/#net.intari/AndroidToolboxCore)
+<a href='https://travis-ci.org/intari/AndroidToolbox/builds'><img src='https://api.travis-ci.org/intari/AndroidToolboxCore.svg?branch=master'></a>
+[![GitHub issues](https://img.shields.io/github/issues/intari/AndroidToolboxCore.svg)](https://github.com/intari/AndroidToolboxCore/issues)
+[![GitHub forks](https://img.shields.io/github/forks/intari/AndroidToolboxCore.svg)](https://github.com/intari/AndroidToolboxCore/network)
+[![GitHub stars](https://img.shields.io/github/stars/intari/AndroidToolboxCore.svg)](https://github.com/intari/AndroidToolboxCore/stargazers)
 
-[![GitHub stars](https://img.shields.io/github/stars/intari/AndroidToolbox.svg)](https://github.com/intari/AndroidToolbox/stargazers)
-[![Github commits (since latest release)](https://img.shields.io/github/commits-since/intari/AndroidToolbox/latest.svg)](https://github.com/intari/AndroidToolbox)
-[![Read the Docs](https://img.shields.io/readthedocs/androidtoolbox.svg)](http://androidtoolbox.readthedocs.io/)
+[![GitHub stars](https://img.shields.io/github/stars/intari/AndroidToolbox.svg)](https://github.com/intari/AndroidToolboxCore/stargazers)
+[![Github commits (since latest release)](https://img.shields.io/github/commits-since/intari/AndroidToolboxCore/latest.svg)](https://github.com/intari/AndroidToolboxCore)
+[![Read the Docs](https://img.shields.io/readthedocs/androidtoolboxcore.svg)](http://androidtoolboxcore.readthedocs.io/)
 
 
 
@@ -30,10 +30,10 @@ and:
 
 ```gradle
 dependencies {
-    compile 'net.intari:AndroidToolbox:{latest version}'
+    compile 'net.intari:AndroidToolboxCore:{latest version}'
 }
 ```
 
 
 TODO: add more descriptions
-TODO: note about libs we import (a lot of Rx ones) and requirements (Java 8) 
+TODO: note about libs we import ) and requirements (Java 8) 
