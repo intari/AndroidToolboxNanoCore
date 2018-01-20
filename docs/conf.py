@@ -53,8 +53,8 @@ source_suffix = ['.rst', '.md']
 master_doc = 'index'
 
 # General information about the project.
-project = u'AndroidToolbox'
-copyright = u'2017, Dmitriy Kazimirov'
+project = u'AndroidToolboxCore'
+copyright = u'2017,2018, Dmitriy Kazimirov'
 author = u'Dmitriy Kazimirov'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -119,7 +119,7 @@ html_sidebars = {
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'AndroidToolboxdoc'
+htmlhelp_basename = 'AndroidToolboxCoredoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -146,7 +146,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'AndroidToolbox.tex', u'AndroidToolbox Documentation',
+    (master_doc, 'AndroidToolboxCore.tex', u'AndroidToolboxCore Documentation',
      u'Dmitriy Kazimirov', 'manual'),
 ]
 
@@ -156,7 +156,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'androidtoolbox', u'AndroidToolbox Documentation',
+    (master_doc, 'androidtoolboxcore', u'AndroidToolboxCore Documentation',
      [author], 1)
 ]
 
@@ -167,8 +167,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'AndroidToolbox', u'AndroidToolbox Documentation',
-     author, 'AndroidToolbox', 'One line description of project.',
+    (master_doc, 'AndroidToolboxCore', u'AndroidToolboxCore Documentation',
+     author, 'AndroidToolboxCore', 'One line description of project.',
      'Miscellaneous'),
 ]
 

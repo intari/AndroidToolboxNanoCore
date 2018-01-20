@@ -1,7 +1,7 @@
-.. AndroidToolbox documentation master file, created by
+.. AndroidToolboxCore documentation master file, created by
    sphinx-quickstart on Sat Nov 18 14:12:40 2017.
  
-Welcome to AndroidToolbox's documentation!
+Welcome to AndroidToolboxCore's documentation!
 ==========================================
 
 Tools I usually use in my android apps
@@ -21,7 +21,7 @@ and:
 
 ```gradle
 dependencies {
-    compile 'net.intari:AndroidToolbox:{latest version}'
+    compile 'net.intari:AndroidToolboxCore:{latest version}'
 }
 ```
 
@@ -65,18 +65,6 @@ Android helpers
 BackgroundExecutionManager
 
 Utils
-
-Android base classes
-===
-BaseActivity
-
-BaseActivityWithGNSSSupport
-
-BaseViewModel
-
-BaseActivityWithViewModelSupport
-
-GNSSLocationService
 
 
 Android 3D Graphics helpers
