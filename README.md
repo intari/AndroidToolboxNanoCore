@@ -37,4 +37,4 @@ dependencies {
 
 TODO: add more descriptions
 
-TODO: note about libs we import ) and requirements (Java 8) 
+TODO: note about libs we import  and requirements (Java 8) 
