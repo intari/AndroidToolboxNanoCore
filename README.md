@@ -38,3 +38,12 @@ dependencies {
 TODO: add more descriptions
 
 TODO: note about libs we import  and requirements (Java 8) 
+* Android Lifecycle Components are used (so we can do things from https://hellsoft.se/simple-asynchronous-loading-with-kotlin-coroutines-f26408f97f46 ) like
+(must be called from from lifecycle provider like activity)
+```java 
+load {
+  loadBitmapFromMediaStore(imageId, imagesBaseUri)
+} then {
+  imageView.setImageBitmap(it)
+}
+```

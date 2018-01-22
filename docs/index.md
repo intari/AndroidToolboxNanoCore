@@ -66,6 +66,16 @@ BackgroundExecutionManager
 
 Utils
 
+CoroutineAndroidLoader
+(must be called from from lifecycle provider like activity)
+```java 
+load {
+  loadBitmapFromMediaStore(imageId, imagesBaseUri) //called on background thread
+} then {
+  imageView.setImageBitmap(it) //called on UI thread
+}
+```
+
 
 Android 3D Graphics helpers
 ====

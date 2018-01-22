@@ -37,6 +37,15 @@ dependencies {
                      "com.android.support:appcompat-v7:$android_support_version",
     ])
 
+    //Android Lifecycle components
+    // Lifecycles only (no ViewModel or LiveData)
+    // per https://developer.android.com/topic/libraries/architecture/adding-components.html it's better to use 1.0.3 for runtime?
+    implementation (["android.arch.lifecycle:runtime:${architectureComponentsVersion}",
+                     "android.arch.lifecycle:extensions:${architectureComponentsVersion}",
+                     "android.arch.lifecycle:common-java8:${architectureComponentsVersion}",
+    ])
+    annotationProcessor "android.arch.lifecycle:compiler:${architectureComponentsVersion}"
+
 
     implementation 'net.intari:CustomLogger:1.0.12' //CustomLog
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
@@ -46,6 +55,7 @@ dependencies {
 
     implementation 'com.yandex.android:mobmetricalib:2.77' //disabled by default
     implementation 'com.amplitude:android-sdk:2.14.1' //disabled by default
+
 
 }
 
