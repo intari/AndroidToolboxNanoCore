@@ -11,7 +11,7 @@ import net.intari.CustomLogger.CustomLog
 
 /**
 * A simple logging utility class which caches its tags.
-* @param tag name of the logger included in log tags. 
+* @param tag name of the logger included in log tags.
 */
 open class Logger(
         open val tag: String) {
@@ -21,19 +21,19 @@ open class Logger(
      * Sets user email
      * @param userEmail labmda to be evaluated for user email
      */
-    inline fun setUserEmail(userEmail: () -> String) = CustomLog.setUserEmail(userEmail())
+    inline fun userEmail(userEmail: () -> String) = CustomLog.setUserEmail(userEmail())
 
     /**
      * Sets user name
      * @param labmda to be evaluated for user name
      */
-    inline fun setUserName(userName: () -> String) = CustomLog.setUserName(userName())
+    inline fun userName(userName: () -> String) = CustomLog.setUserName(userName())
 
     /**
      * Sets user identifier
      * @param userIdentifier labmda to be evaluated for userIdentifier text
      */
-    inline fun setUserIdentifier(userIdentifier: () -> String) = CustomLog.setUserIdentifier(userIdentifier())
+    inline fun userIdentifier(userIdentifier: () -> String) = CustomLog.setUserIdentifier(userIdentifier())
 
     /**
      * Where NSLogger.app is running
@@ -41,25 +41,25 @@ open class Logger(
      * @param newLogPort port number
      * @return false if this function was arleady called
      */
-    fun setLogDestination(newLogHost: String, newLogPort: Int): Boolean = CustomLog.setLogDestination(newLogHost,newLogPort)
+    fun logDestination(newLogHost: String, newLogPort: Int): Boolean = CustomLog.setLogDestination(newLogHost,newLogPort)
 
     /**
      * Are should we use extra debugging features (like dump to logcat)
      * @param newIsDebug labmda to be evaluated for isDebug
      */
-    fun setIsDebug(newIsDebug: () -> Boolean) = CustomLog.setIsDebug(newIsDebug())
+    fun IsDebug(newIsDebug: () -> Boolean) = CustomLog.setIsDebug(newIsDebug())
 
     /**
      * Is it ok to use Crashlytics? (not currently used)
      * @param newIsLogCrashlytics
      */
-    fun setLogCrashlytics(newIsLogCrashlytics: () -> Boolean) = CustomLog.setIsDebug(newIsLogCrashlytics())
+    fun logCrashlytics(newIsLogCrashlytics: () -> Boolean) = CustomLog.setIsDebug(newIsLogCrashlytics())
 
     /**
      * Sets app context to use
      * @param context labmda to be evaluated for context
      */
-    fun setContext(context: () -> Context) = CustomLog.setContext(context())
+    fun context(context: () -> Context) = CustomLog.setContext(context())
 
     /**
      * Logs exception
