@@ -12,8 +12,8 @@ kotlin {
 }
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.2"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -47,7 +47,7 @@ dependencies {
     annotationProcessor "android.arch.lifecycle:compiler:${architectureComponentsVersion}"
 
 
-    implementation 'net.intari:CustomLogger:1.0.13' //CustomLog
+    implementation 'net.intari:CustomLogger:1.0.15' //CustomLog
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     // Kotlin Coroutines
     implementation (["org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version",
