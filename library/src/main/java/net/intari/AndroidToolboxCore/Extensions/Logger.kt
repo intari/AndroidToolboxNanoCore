@@ -35,6 +35,60 @@ open class Logger(
      */
     inline fun userIdentifier(userIdentifier: () -> String) = CustomLog.setUserIdentifier(userIdentifier())
 
+
+
+    /**
+     * Support for https://docs.fabric.io/android/crashlytics/enhanced-reports.html#custom-keys
+     * Crashlytics supports a maximum of 64 key/value pairs.
+     * Once you reach this threshold, additional values are not saved. Each key/value pair can be up to 1 KB in size.
+     * @param key
+     * @param value
+     */
+    inline fun crashlyticsBool(key:String, value:() -> Boolean) = CustomLog.setBool(key,value())
+
+
+    /**
+     * Support for https://docs.fabric.io/android/crashlytics/enhanced-reports.html#custom-keys
+     * Crashlytics supports a maximum of 64 key/value pairs.
+     * Once you reach this threshold, additional values are not saved. Each key/value pair can be up to 1 KB in size.
+     * @param key
+     * @param value
+     */
+    inline fun crashlyticsDouble(key:String, value:() -> Double) = CustomLog.setDouble(key,value())
+
+
+    /**
+     * Support for https://docs.fabric.io/android/crashlytics/enhanced-reports.html#custom-keys
+     * Crashlytics supports a maximum of 64 key/value pairs.
+     * Once you reach this threshold, additional values are not saved. Each key/value pair can be up to 1 KB in size.
+     * @param key
+     * @param value
+     */
+    inline fun crashlyticsFloat(key:String, value:() -> Float) = CustomLog.setFloat(key,value())
+
+    /**
+     * Support for https://docs.fabric.io/android/crashlytics/enhanced-reports.html#custom-keys
+     * Crashlytics supports a maximum of 64 key/value pairs.
+     * Once you reach this threshold, additional values are not saved. Each key/value pair can be up to 1 KB in size.
+     * @param key
+     * @param value
+     */
+    inline fun crashlyticsInt(key:String, value:() -> Int) = CustomLog.setInt(key,value())
+
+    /**
+     * Support for https://docs.fabric.io/android/crashlytics/enhanced-reports.html#custom-keys
+     * @param key
+     * @param value
+     */
+    inline fun crashlyticsLong(key:String, value:() -> Long) = CustomLog.setLong(key,value())
+
+    /**
+     * Support for https://docs.fabric.io/android/crashlytics/enhanced-reports.html#custom-keys
+     * @param key
+     * @param value
+     */
+    inline fun crashlyticsString(key:String, value:() -> String) = CustomLog.setString(key,value())
+
     /**
      * Where NSLogger.app is running
      * @param newLogHost hostname like host.domain.com
