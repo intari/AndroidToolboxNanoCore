@@ -101,6 +101,7 @@ open class Logger(
      * Are should we use extra debugging features (like dump to logcat)
      * @param newIsDebug labmda to be evaluated for isDebug
      */
+    @Deprecated("use 'useDebug'")
     fun IsDebug(newIsDebug: () -> Boolean) = CustomLog.setIsDebug(newIsDebug())
 
     /**
@@ -113,6 +114,7 @@ open class Logger(
      * Is it ok to use Crashlytics? (not currently used)
      * @param newIsLogCrashlytics
      */
+    @Deprecated("use 'useCrashlytics'")
     fun logCrashlytics(newIsLogCrashlytics: () -> Boolean) = CustomLog.setLogCrashlytics(newIsLogCrashlytics())
 
     /**
@@ -125,6 +127,7 @@ open class Logger(
      * Sets app context to use
      * @param context labmda to be evaluated for context
      */
+    @Deprecated("use 'useContext'")
     fun context(context: () -> Context) = CustomLog.setContext(context())
 
     /**
