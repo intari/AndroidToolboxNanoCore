@@ -104,16 +104,34 @@ open class Logger(
     fun IsDebug(newIsDebug: () -> Boolean) = CustomLog.setIsDebug(newIsDebug())
 
     /**
+     * Are should we use extra debugging features (like dump to logcat)
+     * @param newIsDebug labmda to be evaluated for isDebug
+     */
+    fun useDebug(newIsDebug: () -> Boolean) = IsDebug(newIsDebug)
+
+    /**
      * Is it ok to use Crashlytics? (not currently used)
      * @param newIsLogCrashlytics
      */
-    fun logCrashlytics(newIsLogCrashlytics: () -> Boolean) = CustomLog.setIsDebug(newIsLogCrashlytics())
+    fun logCrashlytics(newIsLogCrashlytics: () -> Boolean) = CustomLog.setLogCrashlytics(newIsLogCrashlytics())
+
+    /**
+     * Is it ok to use Crashlytics? (not currently used)
+     * @param newIsLogCrashlytics
+     */
+    fun useCrashlytics(newIsLogCrashlytics: () -> Boolean) = logCrashlytics(newIsLogCrashlytics)
 
     /**
      * Sets app context to use
      * @param context labmda to be evaluated for context
      */
     fun context(context: () -> Context) = CustomLog.setContext(context())
+
+    /**
+     * Sets app context to use
+     * @param context labmda to be evaluated for context
+     */
+    fun useContext(context: () -> Context) = context(context)
 
     /**
      * Logs exception
