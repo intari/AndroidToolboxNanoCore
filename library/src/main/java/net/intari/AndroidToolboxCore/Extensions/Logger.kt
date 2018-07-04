@@ -97,15 +97,22 @@ open class Logger(
      */
     fun logDestination(newLogHost: String, newLogPort: Int): Boolean = CustomLog.setLogDestination(newLogHost,newLogPort)
 
+
     /**
-     * Are should we use extra debugging features (like dump to logcat)
+     * Should we log exceptions to Crashlytics? (=should logException call Crashlytics
+     * @param newIsLogExceptions labmda to be evaluated for newIsLogExceptions
+     */
+    fun logExceptions(newIsLogExceptions: () -> Boolean) = CustomLog.setLogExceptions(newIsLogExceptions())
+
+    /**
+     *  Should we use extra debugging features (like dump to logcat)
      * @param newIsDebug labmda to be evaluated for isDebug
      */
     @Deprecated("use 'useDebug'")
     fun IsDebug(newIsDebug: () -> Boolean) = CustomLog.setIsDebug(newIsDebug())
 
     /**
-     * Are should we use extra debugging features (like dump to logcat)
+     * Should we use extra debugging features (like dump to logcat)
      * @param newIsDebug labmda to be evaluated for isDebug
      */
     fun useDebug(newIsDebug: () -> Boolean) = IsDebug(newIsDebug)
