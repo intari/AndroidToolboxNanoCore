@@ -53,8 +53,12 @@ dependencies {
     implementation (["org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version",
                      "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_version"])
 
-    implementation 'com.yandex.android:mobmetricalib:2.77' //disabled by default
-    implementation 'com.amplitude:android-sdk:2.14.1' //disabled by default
+    // AppMetrica from maven central.
+    implementation 'com.yandex.android:mobmetricalib:3.1.0' //disabled by default
+    // Optional. Play Install Referrer library for better attribution.
+    implementation 'com.android.installreferrer:installreferrer:1.0' //disabled by default
+    //Amplitude
+    implementation 'com.amplitude:android-sdk:2.16.0' //disabled by default
 
 
 }

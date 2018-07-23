@@ -17,6 +17,8 @@ import android.os.Looper;
 import android.view.ContextThemeWrapper;
 
 import com.amplitude.api.Amplitude;
+import com.amplitude.api.Identify;
+import com.yandex.metrica.Revenue;
 import com.yandex.metrica.YandexMetrica;
 
 
@@ -206,13 +208,7 @@ public class Utils {
      */
     public static void addAnalyticsSuperAttribute(String key,Object obj) {
         superAttributes.put(key,obj);
-        /*
-        if (superAttributes.containsKey(key)) {
-            superAttributes.replace(key,obj);
-        } else {
-            superAttributes.put(key,obj);
-        }
-        */
+
     }
     /**
      * Report event to analytics
@@ -230,7 +226,7 @@ public class Utils {
      *
      */
     public static void reportAnalyticsEvent(String event, Map<String, Object> eventAttributes) {
-        //add super attrivutes
+        //add super attributes
         Map<String, Object> attributes=new HashMap<String, Object>();
         if (eventAttributes!=null) {
             attributes.putAll(eventAttributes);
@@ -250,8 +246,8 @@ public class Utils {
 
             if (analytics_AmplitudeActive) {
                 Amplitude.getInstance().logEvent(event,props);
-
             }
+
             //WARNING!. Mixpanel has rather low free limits!
             //AppController.getInstance().getMixpanel().track(event);
         }  catch (JSONException e) {
@@ -260,6 +256,102 @@ public class Utils {
         //TODO: also write to (encrypted) log file
     }
 
+    /**
+     * Reports YandexMetrica's userProfile
+     * @see https://tech.yandex.ru/appmetrica/doc/mobile-sdk-dg/concepts/android-methods-docpage/
+     * @param userProfile
+     */
+    public void reportYandexUserProfile(com.yandex.metrica.profile.UserProfile userProfile) {
+        if (analytics_YandexMetricaActive) {
+            try {
+                YandexMetrica.reportUserProfile(userProfile);
+            } catch (Exception e) {
+                CustomLog.logException(e);
+            }
+        }
+    }
+
+    /**
+     *
+     * @param identityAmplitude
+     */
+    public void setUserIdentityAmplitude(Identify identityAmplitude) {
+        if (analytics_AmplitudeActive) {
+            try {
+                Amplitude.getInstance().identify(identityAmplitude);
+            } catch (Exception e) {
+                CustomLog.logException(e);
+            }
+        }
+
+    }
+
+    /**
+     *
+     * @param userIdAmplitude
+     */
+    public void setUserIdAmplitude(String userIdAmplitude) {
+        if (analytics_AmplitudeActive) {
+            try {
+                Amplitude.getInstance().setUserId(userIdAmplitude);
+            } catch (Exception e) {
+                CustomLog.logException(e);
+            }
+        }
+
+    }
+
+    /**
+     * Report custom user properties to Amplitude
+     * <code>
+     *     JSONObject songProperties = new JSONObject();
+     *      try {
+     *            eventProperties.put("title", "Here comes the Sun");
+     *            eventProperties.put("artist", "The Beatles");
+     *            eventProperties.put("genre", "Rock");
+     *          } catch (JSONException exception) {
+     *       }
+     * </code>
+     * @param properties
+     */
+    public void reportUserPropertiesAmplitude(JSONObject properties) {
+        if (analytics_AmplitudeActive) {
+            try {
+                Amplitude.getInstance().setUserProperties(properties);
+            } catch (Exception e) {
+                CustomLog.logException(e);
+            }
+        }
+    }
+
+    /**
+     * Reports revenue to Amplitude
+     * @param revenue
+     */
+    public void reportRevenueAmplitude(com.amplitude.api.Revenue revenue) {
+        if (analytics_AmplitudeActive) {
+            try {
+                Amplitude.getInstance().logRevenueV2(revenue);
+            } catch (Exception e) {
+                CustomLog.logException(e);
+            }
+        }
+    }
+
+    /**
+     * Reports revenu to Yandex
+     * @param yandexRev
+     */
+    public void reportRevenuYandex(Revenue yandexRev) {
+        if (analytics_YandexMetricaActive) {
+            try {
+                YandexMetrica.reportRevenue(yandexRev);
+
+            } catch (Exception e) {
+                CustomLog.logException(e);
+            }
+        }
+    }
     /**
      * Helper to safely work with progress dialogs, accounting for possible issues like dialog being in another view hierarchy
      * based off http://stackoverflow.com/questions/2224676/android-view-not-attached-to-window-manager
