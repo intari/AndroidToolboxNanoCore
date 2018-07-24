@@ -38,7 +38,49 @@ dependencies {
 TODO: add more descriptions
 
 TODO: note about libs we import  and requirements (Java 8) 
-* Android Lifecycle Components are used (so we can do things from https://hellsoft.se/simple-asynchronous-loading-with-kotlin-coroutines-f26408f97f46 ) like
+
+
+Kotlin helpers
+===
+
+Write-once read-only properties:
+```kotlin
+  val glSurfaceViewDelegate = WriteOnceVal<GLSurfaceView>()
+  val glSurfaceView by glSurfaceViewDelegate
+   ...
+   glSurfaceViewDelegate.writeOnce(MyGLSurfaceView(this))
+   // use glSurfaceView as regular glSurfaceView      
+```
+IllegalStateException will be thrown if it will actually be used before writeOnce call.
+It's better than Delegates.notNull because we can have r/o property (val) instead of r/w property (var) this way.
+
+
+Logging extensions for any types (using CustomLogger). class.simpleName will be used as TAG.
+```kotlin
+   "HelloWorld".logInfo("message")
+   this.logException(ex,"message to go with exception")
+   42.logVerbose("The Answer")
+   "20!8".logError("Replace and press any key")
+   1984.logWarning("Big brother watches you")
+   2000.logInfo("error2k")
+   2038.logVerbose("error2038")
+   "amazon".logDebug("debug aws code")
+```
+
+View extensions
+```kotlin
+  
+```
+
+Android helpers 
+===
+BackgroundExecutionManager
+
+Utils
+
+CoroutineAndroidLoader
+(must be called from from lifecycle provider like activity)
+Android Lifecycle Components are used (so we can do things from https://hellsoft.se/simple-asynchronous-loading-with-kotlin-coroutines-f26408f97f46 ) like
 (must be called from from lifecycle provider like activity)
 ```java 
 load {
@@ -47,3 +89,5 @@ load {
   imageView.setImageBitmap(it)
 }
 ```
+
+

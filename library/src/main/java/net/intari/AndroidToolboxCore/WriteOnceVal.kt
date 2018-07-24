@@ -37,10 +37,6 @@ class WriteOnceVal<T>() {
             else -> localValue as T
         }
     }
-
-    fun T():T {
-        return get();
-    }
     
     fun writeOnce(value : T) {
         val localValue = if (value == null) NULL_MASK as T else value

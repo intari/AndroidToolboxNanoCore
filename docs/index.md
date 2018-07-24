@@ -34,10 +34,11 @@ Kotlin helpers
 
 Write-once read-only properties:
 ```kotlin
-   private val glSurfaceViewDelegate = WriteOnceVal<GLSurfaceView>()
+  val glSurfaceViewDelegate = WriteOnceVal<GLSurfaceView>()
+  val glSurfaceView by glSurfaceViewDelegate
    ...
    glSurfaceViewDelegate.writeOnce(MyGLSurfaceView(this))
-   // use glSurfaceViewDelegate as regular glSurfaceView      
+   // use glSurfaceView as regular glSurfaceView      
 ```
 IllegalStateException will be thrown if it will actually be used before writeOnce call.
 It's better than Delegates.notNull because we can have r/o property (val) instead of r/w property (var) this way.
