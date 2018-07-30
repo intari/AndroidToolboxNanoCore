@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.github.dcendents.android-maven' // ADD THIS
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 group='net.intari'
 
@@ -10,6 +11,7 @@ kotlin {
         coroutines 'enable'
     }
 }
+
 
 android {
     compileSdkVersion 27
@@ -44,11 +46,11 @@ dependencies {
                      "android.arch.lifecycle:extensions:${architectureComponentsVersion}",
                      "android.arch.lifecycle:common-java8:${architectureComponentsVersion}",
     ])
-    annotationProcessor "android.arch.lifecycle:compiler:${architectureComponentsVersion}"
+    kapt "android.arch.lifecycle:compiler:${architectureComponentsVersion}"
 
 
     implementation 'net.intari:CustomLogger:1.0.20' //CustomLog
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     // Kotlin Coroutines
     implementation (["org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version",
                      "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_version"])
