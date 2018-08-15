@@ -377,7 +377,10 @@ public class CoreUtils {
         if (analytics_YandexMetricaActive) {
             for (String key:userAttributes.keySet()) {
                 Object obj=userAttributes.get(key);
-                if (obj instanceof String) {
+                if (obj==null) {
+                    StringAttribute stringAttribute= Attribute.customString(key);
+                    builder.apply(stringAttribute.withValue("<null>"));
+                } else  if (obj instanceof String) {
                     StringAttribute stringAttribute= Attribute.customString(key);
                     builder.apply(stringAttribute.withValue((String)obj));
                 } else if (obj instanceof Integer) {
@@ -396,26 +399,7 @@ public class CoreUtils {
                     StringAttribute stringAttribute= Attribute.customString(key);
                     builder.apply(stringAttribute.withValue(obj.toString()));
                 }
-                /*
-                if (obj.getClass()==String.class ) {
-                    StringAttribute stringAttribute= Attribute.customString(key);
-                    builder.apply(stringAttribute.withValue((String)obj));
-                } else if (obj.getClass()==Integer.class) {
-                    NumberAttribute numberAttribute=Attribute.customNumber(key);
-                    builder.apply(numberAttribute.withValue((Integer)obj));
-                } else if (obj.getClass()==Float.class) {
-                    NumberAttribute numberAttribute=Attribute.customNumber(key);
-                    builder.apply(numberAttribute.withValue((Float)obj));
-                } else if (obj.getClass()==Double.class) {
-                    NumberAttribute numberAttribute=Attribute.customNumber(key);
-                    builder.apply(numberAttribute.withValue((Double)obj));
-                }  else if (obj.getClass()==Boolean.class) {
-                    BooleanAttribute booleanAttribute=Attribute.customBoolean(key);
-                    builder.apply(booleanAttribute.withValue((Boolean)obj));
-                } else {
-                    StringAttribute stringAttribute= Attribute.customString(key);
-                    builder.apply(stringAttribute.withValue(obj.toString()));
-                } */
+
             }
 
             if (name!=null) {
@@ -494,7 +478,10 @@ public class CoreUtils {
             for (String key:userAttributes.keySet()) {
                 Object obj=userAttributes.get(key);
 
-                if (obj instanceof String) {
+                if (obj==null) {
+                    StringAttribute stringAttribute= Attribute.customString(key);
+                    builder.apply(stringAttribute.withValueIfUndefined("<null>"));
+                } else if (obj instanceof String) {
                     StringAttribute stringAttribute= Attribute.customString(key);
                     builder.apply(stringAttribute.withValueIfUndefined((String)obj));
                 } else if (obj instanceof Integer) {
@@ -513,26 +500,7 @@ public class CoreUtils {
                     StringAttribute stringAttribute= Attribute.customString(key);
                     builder.apply(stringAttribute.withValueIfUndefined(obj.toString()));
                 }
-                /*
-                if (obj.getClass()==String.class ) {
-                    StringAttribute stringAttribute= Attribute.customString(key);
-                    builder.apply(stringAttribute.withValueIfUndefined((String)obj));
-                } else if (obj.getClass()==Integer.class) {
-                    NumberAttribute numberAttribute=Attribute.customNumber(key);
-                    builder.apply(numberAttribute.withValueIfUndefined((Integer)obj));
-                } else if (obj.getClass()==Float.class) {
-                    NumberAttribute numberAttribute=Attribute.customNumber(key);
-                    builder.apply(numberAttribute.withValueIfUndefined((Float)obj));
-                } else if (obj.getClass()==Double.class) {
-                    NumberAttribute numberAttribute=Attribute.customNumber(key);
-                    builder.apply(numberAttribute.withValueIfUndefined((Double)obj));
-                } else if (obj.getClass()==Boolean.class) {
-                    BooleanAttribute booleanAttribute=Attribute.customBoolean(key);
-                    builder.apply(booleanAttribute.withValueIfUndefined((Boolean)obj));
-                }  else {
-                    StringAttribute stringAttribute= Attribute.customString(key);
-                    builder.apply(stringAttribute.withValueIfUndefined(obj.toString()));
-                } */
+
             }
 
             if (name!=null) {
