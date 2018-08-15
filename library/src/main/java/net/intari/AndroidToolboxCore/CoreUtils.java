@@ -24,6 +24,7 @@ import com.yandex.metrica.Revenue;
 import com.yandex.metrica.YandexMetrica;
 import com.yandex.metrica.YandexMetricaConfig;
 import com.yandex.metrica.profile.Attribute;
+import com.yandex.metrica.profile.BirthDateAttribute;
 import com.yandex.metrica.profile.BooleanAttribute;
 import com.yandex.metrica.profile.GenderAttribute;
 import com.yandex.metrica.profile.NameAttribute;
@@ -45,6 +46,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -67,6 +69,13 @@ public class CoreUtils {
         FEMALE,
         OTHER
     }
+
+    public static final int NO_AGE=-1;
+    public static final int NO_DOB_YEAR=-1;
+    public static final int NO_DOB_MONTH=-1;
+    public static final int NO_DOB_DAY=-1;
+    public static final int NO_DOB_CALENDAR=-1;
+
 
     //per https://stackoverflow.com/questions/880365/any-way-to-invoke-a-private-method
     public static Object genericInvokMethod(Object obj, String methodName,
@@ -351,9 +360,17 @@ public class CoreUtils {
      * @param userAttributes
      * @param name - value of special attribute 'name', (could be null)
      * @param gender - value of special attribute 'gender' (use Gender.Gender.NOT_KNOWN if none known)
+     * @param age - value of special attribute 'age' (use NO_AGE if none known)
+     * @param dob_year - value of special attribute 'year of birth' (use NO_DOB_YEAR if none known)
+     * @param dob_month - value of special attribute 'month of birth' (use NO_DOB_MONTH if none known)
+     * @param dob_day - value of special attribute 'year of birth' (use NO_DOB_DAY if none known)
+     * @param dob_calendar - value of special attribute 'calendar' (used as way to get date of birth) (use null if none known)
      */
-    public static void reportProfile(Map<String, Object> userAttributes,String name,Gender gender) {
+    public static void reportProfile(Map<String, Object> userAttributes, String name, Gender gender,
+                                     int age, int dob_year, int dob_month, int dob_day, Calendar dob_calendar) {
 
+        //TODO:age/dob support
+        //TODO:put name/gender to amplitude too as regular attributes
 
         UserProfile.Builder builder=com.yandex.metrica.profile.UserProfile.newBuilder();
 
@@ -401,6 +418,21 @@ public class CoreUtils {
                 }
             }
 
+            if (dob_calendar!=null) {
+                BirthDateAttribute birthDateAttribute=Attribute.birthDate();
+                builder.apply(birthDateAttribute.withBirthDate(dob_calendar));
+            } else if ((dob_day!=NO_DOB_DAY) && (dob_month!=NO_DOB_DAY) && (dob_year!=NO_DOB_YEAR)) {
+                BirthDateAttribute birthDateAttribute=Attribute.birthDate();
+                builder.apply(birthDateAttribute.withBirthDate(dob_year,dob_month,dob_day));
+            } else if ((dob_month!=NO_DOB_DAY) && (dob_year!=NO_DOB_YEAR)) {
+                BirthDateAttribute birthDateAttribute=Attribute.birthDate();
+                builder.apply(birthDateAttribute.withBirthDate(dob_year,dob_month));
+            } else if (age!=NO_AGE) {
+                BirthDateAttribute birthDateAttribute=Attribute.birthDate();
+                builder.apply(birthDateAttribute.withAge(age));
+            }
+
+
 
             YandexMetrica.reportUserProfile(builder.build());
         }
@@ -428,8 +460,14 @@ public class CoreUtils {
      * @param userAttributes
      * @param name - value of special attribute 'name' (could be null)
      * @param gender  - value of special attribute 'gender' (use Gender.Gender.NOT_KNOWN if none known)
+     * @param age - value of special attribute 'age' (use NO_AGE if none known)
+     * @param dob_year - value of special attribute 'year of birth' (use NO_DOB_YEAR if none known)
+     * @param dob_month - value of special attribute 'month of birth' (use NO_DOB_MONTH if none known)
+     * @param dob_day - value of special attribute 'year of birth' (use NO_DOB_DAY if none known)
+     * @param dob_calendar - value of special attribute 'calendar' (used as way to get date of birth) (use null if none known)
      */
-    public static void reportProfileIfUndefined(Map<String, Object> userAttributes,String name,Gender gender ) {
+    public static void reportProfileIfUndefined(Map<String, Object> userAttributes,String name,Gender gender,
+                                                int age, int dob_year, int dob_month, int dob_day, Calendar dob_calendar ) {
         UserProfile.Builder builder=com.yandex.metrica.profile.UserProfile.newBuilder();
 
         if (analytics_YandexMetricaActive) {
@@ -452,7 +490,7 @@ public class CoreUtils {
                     builder.apply(booleanAttribute.withValueIfUndefined((Boolean)obj));
                 }  else {
                     StringAttribute stringAttribute= Attribute.customString(key);
-                    builder.apply(stringAttribute.withValue(obj.toString()));
+                    builder.apply(stringAttribute.withValueIfUndefined(obj.toString()));
                 }
             }
 
@@ -465,17 +503,31 @@ public class CoreUtils {
                 GenderAttribute genderAttribute=Attribute.gender();
                 switch (gender) {
                     case MALE:
-                        builder.apply(genderAttribute.withValue(GenderAttribute.Gender.MALE));
+                        builder.apply(genderAttribute.withValueIfUndefined(GenderAttribute.Gender.MALE));
                         break;
                     case FEMALE:
-                        builder.apply(genderAttribute.withValue(GenderAttribute.Gender.FEMALE));
+                        builder.apply(genderAttribute.withValueIfUndefined(GenderAttribute.Gender.FEMALE));
                         break;
                     case OTHER:
-                        builder.apply(genderAttribute.withValue(GenderAttribute.Gender.OTHER));
+                        builder.apply(genderAttribute.withValueIfUndefined(GenderAttribute.Gender.OTHER));
                         break;
                 }
             }
 
+
+            if (dob_calendar!=null) {
+                BirthDateAttribute birthDateAttribute=Attribute.birthDate();
+                builder.apply(birthDateAttribute.withBirthDateIfUndefined(dob_calendar));
+            } else if ((dob_day!=NO_DOB_DAY) && (dob_month!=NO_DOB_DAY) && (dob_year!=NO_DOB_YEAR)) {
+                BirthDateAttribute birthDateAttribute=Attribute.birthDate();
+                builder.apply(birthDateAttribute.withBirthDateIfUndefined(dob_year,dob_month,dob_day));
+            } else if ((dob_month!=NO_DOB_DAY) && (dob_year!=NO_DOB_YEAR)) {
+                BirthDateAttribute birthDateAttribute=Attribute.birthDate();
+                builder.apply(birthDateAttribute.withBirthDateIfUndefined(dob_year,dob_month));
+            } else if (age!=NO_AGE) {
+                BirthDateAttribute birthDateAttribute=Attribute.birthDate();
+                builder.apply(birthDateAttribute.withAgeIfUndefined(age));
+            }
             YandexMetrica.reportUserProfile(builder.build());
         }
         //Convert attributes for Amplitude and Mixpanel
