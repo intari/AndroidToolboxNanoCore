@@ -377,6 +377,26 @@ public class CoreUtils {
         if (analytics_YandexMetricaActive) {
             for (String key:userAttributes.keySet()) {
                 Object obj=userAttributes.get(key);
+                if (obj instanceof String) {
+                    StringAttribute stringAttribute= Attribute.customString(key);
+                    builder.apply(stringAttribute.withValue((String)obj));
+                } else if (obj instanceof Integer) {
+                    NumberAttribute numberAttribute=Attribute.customNumber(key);
+                    builder.apply(numberAttribute.withValue((Integer)obj));
+                } else if (obj instanceof Float) {
+                    NumberAttribute numberAttribute=Attribute.customNumber(key);
+                    builder.apply(numberAttribute.withValue((Float)obj));
+                } else if (obj instanceof Double) {
+                    NumberAttribute numberAttribute=Attribute.customNumber(key);
+                    builder.apply(numberAttribute.withValue((Double)obj));
+                }  else if (obj instanceof Boolean) {
+                    BooleanAttribute booleanAttribute=Attribute.customBoolean(key);
+                    builder.apply(booleanAttribute.withValue((Boolean)obj));
+                } else {
+                    StringAttribute stringAttribute= Attribute.customString(key);
+                    builder.apply(stringAttribute.withValue(obj.toString()));
+                }
+                /*
                 if (obj.getClass()==String.class ) {
                     StringAttribute stringAttribute= Attribute.customString(key);
                     builder.apply(stringAttribute.withValue((String)obj));
@@ -395,7 +415,7 @@ public class CoreUtils {
                 } else {
                     StringAttribute stringAttribute= Attribute.customString(key);
                     builder.apply(stringAttribute.withValue(obj.toString()));
-                }
+                } */
             }
 
             if (name!=null) {
@@ -473,6 +493,27 @@ public class CoreUtils {
         if (analytics_YandexMetricaActive) {
             for (String key:userAttributes.keySet()) {
                 Object obj=userAttributes.get(key);
+
+                if (obj instanceof String) {
+                    StringAttribute stringAttribute= Attribute.customString(key);
+                    builder.apply(stringAttribute.withValueIfUndefined((String)obj));
+                } else if (obj instanceof Integer) {
+                    NumberAttribute numberAttribute=Attribute.customNumber(key);
+                    builder.apply(numberAttribute.withValueIfUndefined((Integer)obj));
+                } else if (obj instanceof Float) {
+                    NumberAttribute numberAttribute=Attribute.customNumber(key);
+                    builder.apply(numberAttribute.withValueIfUndefined((Float)obj));
+                } else if (obj instanceof Double) {
+                    NumberAttribute numberAttribute=Attribute.customNumber(key);
+                    builder.apply(numberAttribute.withValueIfUndefined((Double)obj));
+                } else if (obj instanceof Boolean) {
+                    BooleanAttribute booleanAttribute=Attribute.customBoolean(key);
+                    builder.apply(booleanAttribute.withValueIfUndefined((Boolean)obj));
+                }  else {
+                    StringAttribute stringAttribute= Attribute.customString(key);
+                    builder.apply(stringAttribute.withValueIfUndefined(obj.toString()));
+                }
+                /*
                 if (obj.getClass()==String.class ) {
                     StringAttribute stringAttribute= Attribute.customString(key);
                     builder.apply(stringAttribute.withValueIfUndefined((String)obj));
@@ -491,7 +532,7 @@ public class CoreUtils {
                 }  else {
                     StringAttribute stringAttribute= Attribute.customString(key);
                     builder.apply(stringAttribute.withValueIfUndefined(obj.toString()));
-                }
+                } */
             }
 
             if (name!=null) {
