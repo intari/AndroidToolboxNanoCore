@@ -2,6 +2,7 @@ package net.intari.AndroidToolboxCore;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -193,6 +194,20 @@ public class Utils {
      */
     public static void activateYandexMetrica(boolean activate) {
         analytics_YandexMetricaActive=activate;
+    }
+
+    /**
+     * Init Amplitude and enable foreground tracking
+     * https://developers.amplitude.com/?java#installation
+     * Call this one and call activateAmplitude(true) after it
+     * @param context
+     * @param apiKey
+     * @param application
+     */
+    public static void initAmplitude(Context context, String apiKey, Application application) {
+        Amplitude.getInstance().trackSessionEvents(true);
+        Amplitude.getInstance().initialize(context,apiKey)
+                .enableForegroundTracking(application);
     }
     /**
      * Enable Amplitude for reportAnalyticsEvent.
