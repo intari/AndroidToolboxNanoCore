@@ -280,8 +280,8 @@ public class CoreUtils {
      * @param app
      */
     public static void initLifecycleObservers(Application app) {
-        if (activityLifecycleObserver !=null) {
-            activityLifecycleObserver =new ActivityLifecycleObserver();
+        if (activityLifecycleObserver == null) {
+            activityLifecycleObserver = new ActivityLifecycleObserver();
             app.registerActivityLifecycleCallbacks(activityLifecycleObserver);
             internalApp=app;
         }
