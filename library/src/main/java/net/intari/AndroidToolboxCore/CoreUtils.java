@@ -25,6 +25,8 @@ import com.yandex.metrica.YandexMetrica;
 import com.yandex.metrica.YandexMetricaConfig;
 import com.yandex.metrica.profile.Attribute;
 import com.yandex.metrica.profile.BooleanAttribute;
+import com.yandex.metrica.profile.GenderAttribute;
+import com.yandex.metrica.profile.NameAttribute;
 import com.yandex.metrica.profile.NumberAttribute;
 import com.yandex.metrica.profile.StringAttribute;
 import com.yandex.metrica.profile.UserProfile;
@@ -58,6 +60,13 @@ import java.util.UUID;
  */
 public class CoreUtils {
     public static final String TAG = CoreUtils.class.getSimpleName();
+
+    public  enum Gender {
+        NOT_KNOWN,
+        MALE,
+        FEMALE,
+        OTHER
+    }
 
     //per https://stackoverflow.com/questions/880365/any-way-to-invoke-a-private-method
     public static Object genericInvokMethod(Object obj, String methodName,
@@ -339,10 +348,13 @@ public class CoreUtils {
     /**
      * Report profile
      * only WithValue supported for yandex(not WithValueIfUndefined)
-    * @param userAttributes
+     * @param userAttributes
+     * @param name - value of special attribute 'name', (could be null)
+     * @param gender - value of special attribute 'gender' (use Gender.Gender.NOT_KNOWN if none known)
      */
-    public static void reportProfile(Map<String, Object> userAttributes) {
-     
+    public static void reportProfile(Map<String, Object> userAttributes,String name,Gender gender) {
+
+
         UserProfile.Builder builder=com.yandex.metrica.profile.UserProfile.newBuilder();
 
         if (analytics_YandexMetricaActive) {
@@ -369,6 +381,27 @@ public class CoreUtils {
                 }
             }
 
+            if (name!=null) {
+                NameAttribute nameAttribute=Attribute.name();
+                builder.apply(nameAttribute.withValue(name));
+            }
+
+            if (gender!=Gender.NOT_KNOWN) {
+                GenderAttribute genderAttribute=Attribute.gender();
+                switch (gender) {
+                    case MALE:
+                        builder.apply(genderAttribute.withValue(GenderAttribute.Gender.MALE));
+                        break;
+                    case FEMALE:
+                        builder.apply(genderAttribute.withValue(GenderAttribute.Gender.FEMALE));
+                        break;
+                    case OTHER:
+                        builder.apply(genderAttribute.withValue(GenderAttribute.Gender.OTHER));
+                        break;
+                }
+            }
+
+
             YandexMetrica.reportUserProfile(builder.build());
         }
         //Convert attributes for Amplitude and Mixpanel
@@ -393,8 +426,10 @@ public class CoreUtils {
      * Does not update existing values (for Yandex - withValueIfUndefined)
      * Following types supported:String,Integer,Float,Double,Boolean (and all others using 'toString')
      * @param userAttributes
+     * @param name - value of special attribute 'name' (could be null)
+     * @param gender  - value of special attribute 'gender' (use Gender.Gender.NOT_KNOWN if none known)
      */
-    public static void reportProfileIfUndefined(Map<String, Object> userAttributes) {
+    public static void reportProfileIfUndefined(Map<String, Object> userAttributes,String name,Gender gender ) {
         UserProfile.Builder builder=com.yandex.metrica.profile.UserProfile.newBuilder();
 
         if (analytics_YandexMetricaActive) {
@@ -418,6 +453,26 @@ public class CoreUtils {
                 }  else {
                     StringAttribute stringAttribute= Attribute.customString(key);
                     builder.apply(stringAttribute.withValue(obj.toString()));
+                }
+            }
+
+            if (name!=null) {
+                NameAttribute nameAttribute=Attribute.name();
+                builder.apply(nameAttribute.withValueIfUndefined(name));
+            }
+
+            if (gender!=Gender.NOT_KNOWN) {
+                GenderAttribute genderAttribute=Attribute.gender();
+                switch (gender) {
+                    case MALE:
+                        builder.apply(genderAttribute.withValue(GenderAttribute.Gender.MALE));
+                        break;
+                    case FEMALE:
+                        builder.apply(genderAttribute.withValue(GenderAttribute.Gender.FEMALE));
+                        break;
+                    case OTHER:
+                        builder.apply(genderAttribute.withValue(GenderAttribute.Gender.OTHER));
+                        break;
                 }
             }
 
