@@ -16,6 +16,7 @@ import android.opengl.GLES20;
 import android.os.Build;
 import android.os.Looper;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.view.ContextThemeWrapper;
 
 import com.amplitude.api.Amplitude;
@@ -224,13 +225,14 @@ public class CoreUtils {
 
 
     private static long screenStart=0L;
+
     public static void reportScreenStart(String screenName) {
         screenStart = System.currentTimeMillis();
         Map<String,Object> eventProperties=new HashMap<>();
         eventProperties.put("screenName",screenName);
         reportAnalyticsEvent("screenStart",eventProperties);
     }
-    
+
     public static void reportScreenStop(String screenName) {
         long screenStop = System.currentTimeMillis();
         long elaspedTime = (screenStop-screenStart)/Constants.MS_PER_SECOND;
@@ -242,16 +244,43 @@ public class CoreUtils {
 
     private static CoreLifecycleHandler coreLifecycleHandler;
 
+    private static CoreSupportFragmentLifecycleHandler coreSupportFragmentLifecycleHandler;
+
+    private static Application internalApp;
+    private static FragmentManager internalSupportFragmentManager;
     /**
      * Inits lifecycle handlers
+     * Will send analytics events
      * @param app
+     * @param manager
      */
-    public static void initLifecycleReporters(Application app) {
+    public static void initLifecycleReporters(Application app, FragmentManager manager) {
         if (coreLifecycleHandler !=null) {
             coreLifecycleHandler =new CoreLifecycleHandler();
             app.registerActivityLifecycleCallbacks(coreLifecycleHandler);
+            internalApp=app;
         }
-        app.registerActivityLifecycleCallbacks(new CoreLifecycleHandler()); }
+        if (coreSupportFragmentLifecycleHandler!=null) {
+            coreSupportFragmentLifecycleHandler= new CoreSupportFragmentLifecycleHandler();
+            manager.registerFragmentLifecycleCallbacks(coreSupportFragmentLifecycleHandler,true);
+            internalSupportFragmentManager=manager;
+        }
+    }
+
+    /**
+     * Reverses effects of initLifecycleReporters
+     */
+    public static void unInitLifecyleListeners() {
+        if ((internalSupportFragmentManager!=null) && (coreSupportFragmentLifecycleHandler!=null)) {
+            internalSupportFragmentManager.unregisterFragmentLifecycleCallbacks(coreSupportFragmentLifecycleHandler);
+        }
+        if ((internalApp!=null) && (coreLifecycleHandler!=null)) {
+            internalApp.unregisterActivityLifecycleCallbacks(coreLifecycleHandler);
+
+        }
+    }
+
+
     /**
      * Enable Yandex App Metrica for reportAnalyticsEvent.
      * It's up to client to perform actual initialization and provide keys
