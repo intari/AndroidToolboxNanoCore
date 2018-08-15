@@ -31,7 +31,6 @@ import com.yandex.metrica.profile.NameAttribute;
 import com.yandex.metrica.profile.NumberAttribute;
 import com.yandex.metrica.profile.StringAttribute;
 import com.yandex.metrica.profile.UserProfile;
-import com.yandex.metrica.profile.UserProfileUpdate;
 
 
 import net.intari.CustomLogger.CustomLog;
@@ -209,6 +208,50 @@ public class CoreUtils {
 
     private static boolean analytics_AmplitudeActive = false;
 
+
+    private static int resumed;
+    private static int paused;
+    private static int started;
+    private static int stopped;
+
+    public static boolean isApplicationVisible() {
+        return started > stopped;
+    }
+
+    public static boolean isApplicationInForeground() {
+        return resumed > paused;
+    }
+
+
+    private static long screenStart=0L;
+    public static void reportScreenStart(String screenName) {
+        screenStart = System.currentTimeMillis();
+        Map<String,Object> eventProperties=new HashMap<>();
+        eventProperties.put("screenName",screenName);
+        reportAnalyticsEvent("screenStart",eventProperties);
+    }
+    
+    public static void reportScreenStop(String screenName) {
+        long screenStop = System.currentTimeMillis();
+        long elaspedTime = (screenStop-screenStart)/Constants.MS_PER_SECOND;
+        Map<String,Object> eventProperties=new HashMap<>();
+        eventProperties.put("screenName",screenName);
+        eventProperties.put("timeTook",elaspedTime);
+        reportAnalyticsEvent("screenStop",eventProperties);
+    }
+
+    private static CoreLifecycleHandler coreLifecycleHandler;
+
+    /**
+     * Inits lifecycle handlers
+     * @param app
+     */
+    public static void initLifecycleReporters(Application app) {
+        if (coreLifecycleHandler !=null) {
+            coreLifecycleHandler =new CoreLifecycleHandler();
+            app.registerActivityLifecycleCallbacks(coreLifecycleHandler);
+        }
+        app.registerActivityLifecycleCallbacks(new CoreLifecycleHandler()); }
     /**
      * Enable Yandex App Metrica for reportAnalyticsEvent.
      * It's up to client to perform actual initialization and provide keys

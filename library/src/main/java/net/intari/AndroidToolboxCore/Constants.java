@@ -7,4 +7,8 @@ package net.intari.AndroidToolboxCore;
 
 public class Constants {
     public static final int BYTES_PER_FLOAT = 4;
+
+    public static final long MS_PER_SECOND=1000L;
+    public static final long SECONDS_PER_DAY=86400L;
+
 }
