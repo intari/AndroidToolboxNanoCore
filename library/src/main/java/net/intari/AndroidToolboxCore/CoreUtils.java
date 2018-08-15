@@ -77,6 +77,11 @@ public class CoreUtils {
     public static final int NO_DOB_DAY=-1;
     public static final int NO_DOB_CALENDAR=-1;
 
+    public static final String NAME="Name";
+    public static final String AGE="Age";
+    public static final String DOB="Day of Birth";
+    public static final String GENDER="Gender";
+
 
     //per https://stackoverflow.com/questions/880365/any-way-to-invoke-a-private-method
     public static Object genericInvokMethod(Object obj, String methodName,
@@ -460,9 +465,9 @@ public class CoreUtils {
         //TODO:age/dob support
         //TODO:put name/gender to amplitude too as regular attributes
 
-        UserProfile.Builder builder=com.yandex.metrica.profile.UserProfile.newBuilder();
 
         if (analytics_YandexMetricaActive) {
+            UserProfile.Builder builder=com.yandex.metrica.profile.UserProfile.newBuilder();
             for (String key:userAttributes.keySet()) {
                 Object obj=userAttributes.get(key);
                 if (obj==null) {
@@ -524,11 +529,29 @@ public class CoreUtils {
                 builder.apply(birthDateAttribute.withAge(age));
             }
 
-
-
             YandexMetrica.reportUserProfile(builder.build());
         }
+
+
         //Convert attributes for Amplitude and Mixpanel
+
+        if (name!=null) {
+            userAttributes.put(NAME,name);
+        }
+        if (gender!=Gender.NOT_KNOWN) {
+            userAttributes.put(GENDER,gender.name());
+        }
+
+        if (dob_calendar!=null) {
+            userAttributes.put(DOB,dob_calendar.getTime().toGMTString());
+        } else if ((dob_day!=NO_DOB_DAY) && (dob_month!=NO_DOB_DAY) && (dob_year!=NO_DOB_YEAR)) {
+            userAttributes.put(DOB,dob_year+"/"+dob_month+"/"+dob_day);
+        } else if ((dob_month!=NO_DOB_DAY) && (dob_year!=NO_DOB_YEAR)) {
+            userAttributes.put(DOB,dob_year+"/"+dob_month);
+        } else if (age!=NO_AGE) {
+            userAttributes.put(AGE,age);
+        }
+
         try {
             JSONObject props = new JSONObject();
             for (String key:userAttributes.keySet()) {
@@ -627,7 +650,27 @@ public class CoreUtils {
             }
             YandexMetrica.reportUserProfile(builder.build());
         }
+
         //Convert attributes for Amplitude and Mixpanel
+
+
+        if (name!=null) {
+            userAttributes.put(NAME,name);
+        }
+        if (gender!=Gender.NOT_KNOWN) {
+            userAttributes.put(GENDER,gender.name());
+        }
+
+        if (dob_calendar!=null) {
+            userAttributes.put(DOB,dob_calendar.getTime().toGMTString());
+        } else if ((dob_day!=NO_DOB_DAY) && (dob_month!=NO_DOB_DAY) && (dob_year!=NO_DOB_YEAR)) {
+            userAttributes.put(DOB,dob_year+"/"+dob_month+"/"+dob_day);
+        } else if ((dob_month!=NO_DOB_DAY) && (dob_year!=NO_DOB_YEAR)) {
+            userAttributes.put(DOB,dob_year+"/"+dob_month);
+        } else if (age!=NO_AGE) {
+            userAttributes.put(AGE,age);
+        }
+
         try {
             JSONObject props = new JSONObject();
             for (String key:userAttributes.keySet()) {
@@ -635,6 +678,7 @@ public class CoreUtils {
             }
 
             if (analytics_AmplitudeActive) {
+                //TODO:honor ifNotExiist-style versions (requires changing wrapper)
                 reportUserPropertiesAmplitude(props);
             }
 
