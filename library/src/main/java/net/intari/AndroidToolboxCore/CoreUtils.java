@@ -345,8 +345,18 @@ public class CoreUtils {
 
     }
 
+    public static void setUserIDYandexMetrica(String userIDYandexMetrica) {
+        if (analytics_YandexMetricaActive) {
+            try {
+                YandexMetrica.setUserProfileID(userIDYandexMetrica);
+            } catch (Exception e) {
+                CustomLog.logException(e);
+            }
+        }
+
+    }
     /**
-     *
+     * Sets Amplitude user Id
      * @param userIdAmplitude
      */
     public static void setUserIdAmplitude(String userIdAmplitude) {
