@@ -90,6 +90,9 @@ public class ActivityLifecycleObserver implements Application.ActivityLifecycleC
         if (CoreUtils.isReportLifecycleEventsForDebug()) {
             CustomLog.d(TAG,activity.getClass().getSimpleName()+" was paused after "+timePassed+" seconds");
         }
+        if (CoreUtils.isReportLifecycleEventsForAnalytics_OnlyStart()) {
+            return;
+        }
         if (CoreUtils.isReportLifecycleEventsForAnalytics()) {
             Map<String, Object> eventAttributes=new HashMap<String, Object>();
             eventAttributes.put("activity",activity.getClass().getSimpleName());

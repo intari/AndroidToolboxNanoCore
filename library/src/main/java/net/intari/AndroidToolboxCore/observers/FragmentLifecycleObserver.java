@@ -210,6 +210,9 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
         if (CoreUtils.isReportLifecycleEventsForDebug()) {
             CustomLog.d(TAG,f.getClass().getSimpleName()+" paused after "+timePassed+" seconds");
         }
+        if (CoreUtils.isReportLifecycleEventsForAnalytics_OnlyStart()) {
+            return;
+        }
         if (CoreUtils.isReportLifecycleEventsForAnalytics()) {
             Map<String, Object> eventAttributes=new HashMap<String, Object>();
             eventAttributes.put("fragment",f.getClass().getSimpleName());

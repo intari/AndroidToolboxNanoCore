@@ -274,6 +274,20 @@ public class CoreUtils {
 
     private static boolean reportLifecycleEventsForAnalytics=false;
 
+    public static boolean isReportLifecycleEventsForAnalytics_OnlyStart() {
+        return reportLifecycleEventsForAnalytics_OnlyStart;
+    }
+
+    /**
+     * Show we report only start events and not stop events?
+     * @param reportLifecycleEventsForAnalytics_OnlyStart
+     */
+    public static void setReportLifecycleEventsForAnalytics_OnlyStart(boolean reportLifecycleEventsForAnalytics_OnlyStart) {
+        CoreUtils.reportLifecycleEventsForAnalytics_OnlyStart = reportLifecycleEventsForAnalytics_OnlyStart;
+    }
+
+    private static boolean reportLifecycleEventsForAnalytics_OnlyStart=false;
+
     private static ReportLifecycleAs reportLifecycleForAnalyticsAs=ReportLifecycleAs.JUST_EVENT;
 
     /**
