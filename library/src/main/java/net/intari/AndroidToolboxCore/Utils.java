@@ -22,6 +22,7 @@ import com.amplitude.api.Amplitude;
 import com.amplitude.api.Identify;
 import com.yandex.metrica.Revenue;
 import com.yandex.metrica.YandexMetrica;
+import com.yandex.metrica.YandexMetricaConfig;
 
 
 import net.intari.CustomLogger.CustomLog;
@@ -184,7 +185,6 @@ public class Utils {
 
     private static boolean analytics_AmplitudeActive = false;
 
-    //TODO:add actual code helper to init analytics
     /**
      * Enable Yandex App Metrica for reportAnalyticsEvent.
      * It's up to client to perform actual initialization and provide keys
@@ -196,6 +196,39 @@ public class Utils {
         analytics_YandexMetricaActive=activate;
     }
 
+    /**
+     * Init Yandex.Metrica
+     * see https://tech.yandex.ru/appmetrica/doc/mobile-sdk-dg/concepts/android-initialize-docpage/
+     * call activateYandexMetrica after this one
+     * @param app
+     * @param apiKey
+     * @param locationTracking
+     * @param firstLaunchIsUpdate
+     */
+    public static void initYandexMetrica(Application app,String apiKey,boolean locationTracking,boolean firstLaunchIsUpdate) {
+        // Инициализация AppMetrica SDK
+        YandexMetricaConfig.Builder configBuilder = YandexMetricaConfig.newConfigBuilder(apiKey);
+        configBuilder.withCrashReporting(false);//disable native crash reporting - we have crashlytics
+        configBuilder.withLocationTracking(locationTracking);
+        configBuilder.handleFirstActivationAsUpdate(firstLaunchIsUpdate);
+        YandexMetrica.activate(app.getApplicationContext(), configBuilder.build());
+        // Отслеживание активности пользователей
+        YandexMetrica.enableActivityAutoTracking(app);
+    }
+
+    /**
+     * Report crash to Yandex.Metrica
+     * @param throwable
+     */
+    public static void yandexMetricaReportCrash(Throwable throwable) {
+        if (analytics_YandexMetricaActive) {
+            try {
+                YandexMetrica.reportUnhandledException(throwable);
+            } catch (Exception e) {
+                CustomLog.logException(e);
+            }
+        }
+    }
     /**
      * Init Amplitude and enable foreground tracking
      * https://developers.amplitude.com/?java#installation
