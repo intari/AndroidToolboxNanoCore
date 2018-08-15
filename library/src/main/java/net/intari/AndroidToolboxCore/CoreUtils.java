@@ -23,6 +23,12 @@ import com.amplitude.api.Identify;
 import com.yandex.metrica.Revenue;
 import com.yandex.metrica.YandexMetrica;
 import com.yandex.metrica.YandexMetricaConfig;
+import com.yandex.metrica.profile.Attribute;
+import com.yandex.metrica.profile.BooleanAttribute;
+import com.yandex.metrica.profile.NumberAttribute;
+import com.yandex.metrica.profile.StringAttribute;
+import com.yandex.metrica.profile.UserProfile;
+import com.yandex.metrica.profile.UserProfileUpdate;
 
 
 import net.intari.CustomLogger.CustomLog;
@@ -330,6 +336,109 @@ public class CoreUtils {
         }
     }
 
+    /**
+     * Report profile
+     * only WithValue supported for yandex(not WithValueIfUndefined)
+    * @param userAttributes
+     */
+    public static void reportProfile(Map<String, Object> userAttributes) {
+     
+        UserProfile.Builder builder=com.yandex.metrica.profile.UserProfile.newBuilder();
+
+        if (analytics_YandexMetricaActive) {
+            for (String key:userAttributes.keySet()) {
+                Object obj=userAttributes.get(key);
+                if (obj.getClass()==String.class ) {
+                    StringAttribute stringAttribute= Attribute.customString(key);
+                    builder.apply(stringAttribute.withValue((String)obj));
+                } else if (obj.getClass()==Integer.class) {
+                    NumberAttribute numberAttribute=Attribute.customNumber(key);
+                    builder.apply(numberAttribute.withValue((Integer)obj));
+                } else if (obj.getClass()==Float.class) {
+                    NumberAttribute numberAttribute=Attribute.customNumber(key);
+                    builder.apply(numberAttribute.withValue((Float)obj));
+                } else if (obj.getClass()==Double.class) {
+                    NumberAttribute numberAttribute=Attribute.customNumber(key);
+                    builder.apply(numberAttribute.withValue((Double)obj));
+                }  else if (obj.getClass()==Boolean.class) {
+                    BooleanAttribute booleanAttribute=Attribute.customBoolean(key);
+                    builder.apply(booleanAttribute.withValue((Boolean)obj));
+                } else {
+                    StringAttribute stringAttribute= Attribute.customString(key);
+                    builder.apply(stringAttribute.withValue(obj.toString()));
+                }
+            }
+
+            YandexMetrica.reportUserProfile(builder.build());
+        }
+        //Convert attributes for Amplitude and Mixpanel
+        try {
+            JSONObject props = new JSONObject();
+            for (String key:userAttributes.keySet()) {
+                props.put(key,userAttributes.get(key));
+            }
+
+            if (analytics_AmplitudeActive) {
+                reportUserPropertiesAmplitude(props);
+            }
+
+        }  catch (JSONException e) {
+            CustomLog.logException(e);
+        }
+        //TODO: also write to (encrypted) log file
+    }
+
+    /**
+     * Report profile
+     * Does not update existing values (for Yandex - withValueIfUndefined)
+     * Following types supported:String,Integer,Float,Double,Boolean (and all others using 'toString')
+     * @param userAttributes
+     */
+    public static void reportProfileIfUndefined(Map<String, Object> userAttributes) {
+        UserProfile.Builder builder=com.yandex.metrica.profile.UserProfile.newBuilder();
+
+        if (analytics_YandexMetricaActive) {
+            for (String key:userAttributes.keySet()) {
+                Object obj=userAttributes.get(key);
+                if (obj.getClass()==String.class ) {
+                    StringAttribute stringAttribute= Attribute.customString(key);
+                    builder.apply(stringAttribute.withValueIfUndefined((String)obj));
+                } else if (obj.getClass()==Integer.class) {
+                    NumberAttribute numberAttribute=Attribute.customNumber(key);
+                    builder.apply(numberAttribute.withValueIfUndefined((Integer)obj));
+                } else if (obj.getClass()==Float.class) {
+                    NumberAttribute numberAttribute=Attribute.customNumber(key);
+                    builder.apply(numberAttribute.withValueIfUndefined((Float)obj));
+                } else if (obj.getClass()==Double.class) {
+                    NumberAttribute numberAttribute=Attribute.customNumber(key);
+                    builder.apply(numberAttribute.withValueIfUndefined((Double)obj));
+                } else if (obj.getClass()==Boolean.class) {
+                    BooleanAttribute booleanAttribute=Attribute.customBoolean(key);
+                    builder.apply(booleanAttribute.withValueIfUndefined((Boolean)obj));
+                }  else {
+                    StringAttribute stringAttribute= Attribute.customString(key);
+                    builder.apply(stringAttribute.withValue(obj.toString()));
+                }
+            }
+
+            YandexMetrica.reportUserProfile(builder.build());
+        }
+        //Convert attributes for Amplitude and Mixpanel
+        try {
+            JSONObject props = new JSONObject();
+            for (String key:userAttributes.keySet()) {
+                props.put(key,userAttributes.get(key));
+            }
+
+            if (analytics_AmplitudeActive) {
+                reportUserPropertiesAmplitude(props);
+            }
+
+        }  catch (JSONException e) {
+            CustomLog.logException(e);
+        }
+        //TODO: also write to (encrypted) log file
+    }
     /**
      *
      * @param identityAmplitude
