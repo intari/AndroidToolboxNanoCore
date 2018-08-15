@@ -46,12 +46,12 @@ import java.util.UUID;
 
 /**
  * Support utils for my projects
- * (c) Dmitriy Kazimirov 2015-2016, e-mail:dmitriy.kazimirov@viorsan.com
+ * (c) Dmitriy Kazimirov 2015-2018, e-mail:dmitriy.kazimirov@viorsan.com
  *
  *
  */
-public class Utils {
-    public static final String TAG = Utils.class.getSimpleName();
+public class CoreUtils {
+    public static final String TAG = CoreUtils.class.getSimpleName();
 
     //per https://stackoverflow.com/questions/880365/any-way-to-invoke-a-private-method
     public static Object genericInvokMethod(Object obj, String methodName,
@@ -157,7 +157,7 @@ public class Utils {
         Thread t = Thread.currentThread();
         long l = t.getId();
         String name;
-        if (Utils.isUiThread()) {
+        if (CoreUtils.isUiThread()) {
             name="(UI)"+ t.getName();
         } else {
             name= t.getName();
@@ -212,8 +212,16 @@ public class Utils {
         configBuilder.withLocationTracking(locationTracking);
         configBuilder.handleFirstActivationAsUpdate(firstLaunchIsUpdate);
         YandexMetrica.activate(app.getApplicationContext(), configBuilder.build());
-        // Отслеживание активности пользователей
         YandexMetrica.enableActivityAutoTracking(app);
+    }
+
+    /**
+     * Reports throwable to Crashlytics AND yandexMetrica
+     * @param throwable
+     */
+    public static void reportThrowable(Throwable throwable) {
+        CustomLog.logException(throwable);
+        yandexMetricaReportCrash(throwable);
     }
 
     /**
@@ -312,7 +320,7 @@ public class Utils {
      * @see https://tech.yandex.ru/appmetrica/doc/mobile-sdk-dg/concepts/android-methods-docpage/
      * @param userProfile
      */
-    public void reportYandexUserProfile(com.yandex.metrica.profile.UserProfile userProfile) {
+    public static void reportYandexUserProfile(com.yandex.metrica.profile.UserProfile userProfile) {
         if (analytics_YandexMetricaActive) {
             try {
                 YandexMetrica.reportUserProfile(userProfile);
@@ -326,7 +334,7 @@ public class Utils {
      *
      * @param identityAmplitude
      */
-    public void setUserIdentityAmplitude(Identify identityAmplitude) {
+    public static void setUserIdentityAmplitude(Identify identityAmplitude) {
         if (analytics_AmplitudeActive) {
             try {
                 Amplitude.getInstance().identify(identityAmplitude);
@@ -341,7 +349,7 @@ public class Utils {
      *
      * @param userIdAmplitude
      */
-    public void setUserIdAmplitude(String userIdAmplitude) {
+    public static void setUserIdAmplitude(String userIdAmplitude) {
         if (analytics_AmplitudeActive) {
             try {
                 Amplitude.getInstance().setUserId(userIdAmplitude);
@@ -365,7 +373,7 @@ public class Utils {
      * </code>
      * @param properties
      */
-    public void reportUserPropertiesAmplitude(JSONObject properties) {
+    public static void reportUserPropertiesAmplitude(JSONObject properties) {
         if (analytics_AmplitudeActive) {
             try {
                 Amplitude.getInstance().setUserProperties(properties);
@@ -379,7 +387,7 @@ public class Utils {
      * Reports revenue to Amplitude
      * @param revenue
      */
-    public void reportRevenueAmplitude(com.amplitude.api.Revenue revenue) {
+    public static  void reportRevenueAmplitude(com.amplitude.api.Revenue revenue) {
         if (analytics_AmplitudeActive) {
             try {
                 Amplitude.getInstance().logRevenueV2(revenue);
@@ -393,7 +401,7 @@ public class Utils {
      * Reports revenu to Yandex
      * @param yandexRev
      */
-    public void reportRevenuYandex(Revenue yandexRev) {
+    public static void reportRevenuYandex(Revenue yandexRev) {
         if (analytics_YandexMetricaActive) {
             try {
                 YandexMetrica.reportRevenue(yandexRev);
