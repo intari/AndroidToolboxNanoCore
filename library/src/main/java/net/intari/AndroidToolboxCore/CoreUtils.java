@@ -345,6 +345,18 @@ public class CoreUtils {
 
     }
 
+    /**
+     * Sets profile id for Yandex.Metrica AND Amplitude (if any enabled)
+     * @param profileIdForAnalytics
+     */
+    public static void setProfileIdForAnalytics(String profileIdForAnalytics) {
+        setUserIdAmplitude(profileIdForAnalytics);
+        setUserIDYandexMetrica(profileIdForAnalytics);
+    }
+    /**
+     * Sets YandexMetrica profile id
+     * @param userIDYandexMetrica
+     */
     public static void setUserIDYandexMetrica(String userIDYandexMetrica) {
         if (analytics_YandexMetricaActive) {
             try {
