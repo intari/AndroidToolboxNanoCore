@@ -71,6 +71,13 @@ public class CoreUtils {
         OTHER
     }
 
+
+    public  enum ReportLifecycleAs {
+        JUST_EVENT,
+        PREFIXED_SHORT_CLASS_NAME,
+        PREFIXED_FULL_CLASS_NAME,
+    }
+
     public static final int NO_AGE=-1;
     public static final int NO_DOB_YEAR=-1;
     public static final int NO_DOB_MONTH=-1;
@@ -266,6 +273,24 @@ public class CoreUtils {
     }
 
     private static boolean reportLifecycleEventsForAnalytics=false;
+
+    private static ReportLifecycleAs reportLifecycleForAnalyticsAs=ReportLifecycleAs.JUST_EVENT;
+
+    /**
+     * How to name analytics events ?
+     * @param reportLifecycleAs
+     */
+    public static void setReportLifecycleForAnalyticsAs(ReportLifecycleAs reportLifecycleAs) {
+        reportLifecycleForAnalyticsAs=reportLifecycleAs;
+    }
+
+    /**
+     * How analytics events are named
+     * @return
+     */
+    public static ReportLifecycleAs getReportLifecycleForAnalyticsAs() {
+        return reportLifecycleForAnalyticsAs;
+    }
 
     /**
      * Should observers report lifecycle events to analytics?

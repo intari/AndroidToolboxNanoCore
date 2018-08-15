@@ -176,7 +176,17 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
             Map<String, Object> eventAttributes=new HashMap<String, Object>();
             eventAttributes.put("fragment",f.getClass().getSimpleName());
             eventAttributes.put("fragmentFullName",f.getClass().getCanonicalName());
-            CoreUtils.reportAnalyticsEvent("fragmentResumed",eventAttributes);
+            switch (CoreUtils.getReportLifecycleForAnalyticsAs()) {
+                case JUST_EVENT:
+                    CoreUtils.reportAnalyticsEvent("fragmentResumed",eventAttributes);
+                    break;
+                case PREFIXED_FULL_CLASS_NAME:
+                    CoreUtils.reportAnalyticsEvent(f.getClass().getCanonicalName()+" resumed",eventAttributes);
+                    break;
+                case PREFIXED_SHORT_CLASS_NAME:
+                    CoreUtils.reportAnalyticsEvent(f.getClass().getSimpleName()+" resumed",eventAttributes);
+                    break;
+            }
         }
     }
 
@@ -205,7 +215,17 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
             eventAttributes.put("fragment",f.getClass().getSimpleName());
             eventAttributes.put("fragmentFullName",f.getClass().getCanonicalName());
             eventAttributes.put("timePassedInSeconds",timePassed);
-            CoreUtils.reportAnalyticsEvent("fragmentPaused",eventAttributes);
+            switch (CoreUtils.getReportLifecycleForAnalyticsAs()) {
+                case JUST_EVENT:
+                    CoreUtils.reportAnalyticsEvent("fragmentPaused", eventAttributes);
+                    break;
+                case PREFIXED_FULL_CLASS_NAME:
+                    CoreUtils.reportAnalyticsEvent(f.getClass().getCanonicalName() + " paused", eventAttributes);
+                    break;
+                case PREFIXED_SHORT_CLASS_NAME:
+                    CoreUtils.reportAnalyticsEvent(f.getClass().getSimpleName() + " paused", eventAttributes);
+                    break;
+            }
         }
 
 

@@ -67,7 +67,18 @@ public class ActivityLifecycleObserver implements Application.ActivityLifecycleC
             Map<String, Object> eventAttributes=new HashMap<String, Object>();
             eventAttributes.put("activity",activity.getClass().getSimpleName());
             eventAttributes.put("activityFullName",activity.getClass().getCanonicalName());
-            CoreUtils.reportAnalyticsEvent("activityResumed",eventAttributes);
+            switch (CoreUtils.getReportLifecycleForAnalyticsAs()) {
+                case JUST_EVENT:
+                    CoreUtils.reportAnalyticsEvent("activityResumed", eventAttributes);
+                    break;
+                case PREFIXED_FULL_CLASS_NAME:
+                    CoreUtils.reportAnalyticsEvent(activity.getClass().getCanonicalName() + " resumed", eventAttributes);
+                    break;
+                case PREFIXED_SHORT_CLASS_NAME:
+                    CoreUtils.reportAnalyticsEvent(activity.getClass().getSimpleName() + " resumed", eventAttributes);
+                    break;
+            }
+
         }
     }
 
@@ -84,7 +95,19 @@ public class ActivityLifecycleObserver implements Application.ActivityLifecycleC
             eventAttributes.put("activity",activity.getClass().getSimpleName());
             eventAttributes.put("activityFullName",activity.getClass().getCanonicalName());
             eventAttributes.put("timePassedInSeconds",timePassed);
-            CoreUtils.reportAnalyticsEvent("activityPaused",eventAttributes);
+
+            switch (CoreUtils.getReportLifecycleForAnalyticsAs()) {
+                case JUST_EVENT:
+                    CoreUtils.reportAnalyticsEvent("activityPaused", eventAttributes);
+                    break;
+                case PREFIXED_FULL_CLASS_NAME:
+                    CoreUtils.reportAnalyticsEvent(activity.getClass().getCanonicalName() + " paused", eventAttributes);
+                    break;
+                case PREFIXED_SHORT_CLASS_NAME:
+                    CoreUtils.reportAnalyticsEvent(activity.getClass().getSimpleName() + " paused", eventAttributes);
+                    break;
+            }
+
         }
 
     }
