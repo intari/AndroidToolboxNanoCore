@@ -34,6 +34,7 @@ import com.yandex.metrica.profile.StringAttribute;
 import com.yandex.metrica.profile.UserProfile;
 
 
+import net.intari.AndroidToolboxCore.observers.ActivityLifecycleObserver;
 import net.intari.CustomLogger.CustomLog;
 
 import org.json.JSONArray;
@@ -242,28 +243,47 @@ public class CoreUtils {
         reportAnalyticsEvent("screenStop",eventProperties);
     }
 
-    private static CoreLifecycleHandler coreLifecycleHandler;
-
-    private static CoreSupportFragmentLifecycleHandler coreSupportFragmentLifecycleHandler;
+    private static ActivityLifecycleObserver activityLifecycleObserver;
 
     private static Application internalApp;
-    private static FragmentManager internalSupportFragmentManager;
+    private static boolean reportLifecycleEventsForDebug=false;
+
+    /**
+     * Should observers report lifecycle events to CustomLog?
+     * @param report
+     */
+    public static void setReportLifecycleEventsForDebug(boolean report) {
+        reportLifecycleEventsForDebug=report;
+    }
+
+    public static boolean isReportLifecycleEventsForDebug() {
+        return reportLifecycleEventsForDebug;
+    }
+
+    private static boolean reportLifecycleEventsForAnalytics=false;
+
+    /**
+     * Should observers report lifecycle events to analytics?
+     * @param report
+     */
+    public static void setReportLifecycleEventsForAnalytics(boolean report) {
+        reportLifecycleEventsForAnalytics=report;
+    }
+
+    public static boolean isReportLifecycleEventsForAnalytics() {
+        return reportLifecycleEventsForAnalytics;
+    }
+
     /**
      * Inits lifecycle handlers
      * Will send analytics events
      * @param app
-     * @param manager
      */
-    public static void initLifecycleReporters(Application app, FragmentManager manager) {
-        if (coreLifecycleHandler !=null) {
-            coreLifecycleHandler =new CoreLifecycleHandler();
-            app.registerActivityLifecycleCallbacks(coreLifecycleHandler);
+    public static void initLifecycleObservers(Application app) {
+        if (activityLifecycleObserver !=null) {
+            activityLifecycleObserver =new ActivityLifecycleObserver();
+            app.registerActivityLifecycleCallbacks(activityLifecycleObserver);
             internalApp=app;
-        }
-        if (coreSupportFragmentLifecycleHandler!=null) {
-            coreSupportFragmentLifecycleHandler= new CoreSupportFragmentLifecycleHandler();
-            manager.registerFragmentLifecycleCallbacks(coreSupportFragmentLifecycleHandler,true);
-            internalSupportFragmentManager=manager;
         }
     }
 
@@ -271,12 +291,8 @@ public class CoreUtils {
      * Reverses effects of initLifecycleReporters
      */
     public static void unInitLifecyleListeners() {
-        if ((internalSupportFragmentManager!=null) && (coreSupportFragmentLifecycleHandler!=null)) {
-            internalSupportFragmentManager.unregisterFragmentLifecycleCallbacks(coreSupportFragmentLifecycleHandler);
-        }
-        if ((internalApp!=null) && (coreLifecycleHandler!=null)) {
-            internalApp.unregisterActivityLifecycleCallbacks(coreLifecycleHandler);
-
+        if ((internalApp!=null) && (activityLifecycleObserver!=null)) {
+            internalApp.unregisterActivityLifecycleCallbacks(activityLifecycleObserver);
         }
     }
 
