@@ -84,10 +84,11 @@ public class CoreUtils {
     public static final int NO_DOB_DAY=-1;
     public static final int NO_DOB_CALENDAR=-1;
 
-    public static final String NAME="Name";
-    public static final String AGE="Age";
+    public static final String NAME="name";
+    public static final String AGE="age";
     public static final String DOB="Day of Birth";
-    public static final String GENDER="Gender";
+    public static final String GENDER="gender";
+    public static final String USERNAME="username";
 
 
     //per https://stackoverflow.com/questions/880365/any-way-to-invoke-a-private-method
