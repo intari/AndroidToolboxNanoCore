@@ -34,11 +34,17 @@ public class CrashHandlerUtil implements  java.lang.Thread.UncaughtExceptionHand
 
     private static boolean logToCustomLog=false;
 
-    public static boolean isLogToCustomLog() {
+    public static boolean isLoggingEnabled() {
         return logToCustomLog;
     }
-    public static void setIsLogToCustomLog(boolean isLog) {
+
+    public static void setLoggingEnabled(boolean isLog) {
         logToCustomLog=isLog;
+    }
+
+    @Deprecated
+    public static void setIsLogToCustomLog(boolean isLog) {
+        setLoggingEnabled(isLog);
     }
 
     private static final int INITTIAL_CAPACITY=37;
@@ -47,7 +53,9 @@ public class CrashHandlerUtil implements  java.lang.Thread.UncaughtExceptionHand
     public CrashHandlerUtil(Context context) {
         this.oldHandler=Thread.getDefaultUncaughtExceptionHandler();
         this.context=context;
-        CustomLog.d(TAG,"Creating new handler. Old handler "+this.oldHandler);
+        if (isLoggingEnabled()) {
+            CustomLog.d(TAG,"Creating new handler. Old handler "+this.oldHandler);
+        }
     }
 
     public static CrashHandlerUtil getInstance() {
@@ -70,7 +78,7 @@ public class CrashHandlerUtil implements  java.lang.Thread.UncaughtExceptionHand
     public static void reportCrash(Thread t, Throwable e) {
         StringWriter sw2=new StringWriter();
         joinStackTrace(e,sw2);
-        if (isLogToCustomLog()) {
+        if (isLoggingEnabled()) {
             StringWriter sw=new StringWriter();
             PrintWriter pw=new PrintWriter(sw);
             e.printStackTrace(pw);//does it report 'caused by'?
@@ -108,15 +116,21 @@ public class CrashHandlerUtil implements  java.lang.Thread.UncaughtExceptionHand
 
         } catch (Throwable inner) {
             Log.e(TAG,"Crash in crash handler!!!");
-            CustomLog.e(TAG,"Crash in crash handler!!!:"+inner.toString());
+            if (isLoggingEnabled()) {
+                CustomLog.e(TAG,"Crash in crash handler!!!:"+inner.toString());
+            }
         }
         if (intentForRestart!=null) {
-            CustomLog.d(TAG,"IntentForRestart is not null - restarting");
+            if (isLoggingEnabled()) {
+                CustomLog.d(TAG,"IntentForRestart is not null - restarting");
+            }
             context.startActivity(intentForRestart);
             //System.exit(1);
         }
         if (oldHandler!=null) {
-            CustomLog.d(TAG,"Calling old handler "+oldHandler);
+            if (isLoggingEnabled()) {
+                CustomLog.d(TAG,"Calling old handler "+oldHandler);
+            }
             oldHandler.uncaughtException(t, e);
         }
     }
