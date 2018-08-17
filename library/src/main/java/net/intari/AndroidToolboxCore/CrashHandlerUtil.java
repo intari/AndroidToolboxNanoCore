@@ -15,9 +15,11 @@ import java.util.Map;
 /**
  * Created by Dmitriy Kazimirov on 17.08.2018.
  * Custom Crash Handler
- * For use part of reporter
+ * For use as part of reporter
+ * Can restart on crash
+ * Reports crashes to analytics
  * What it does NOT do:
- * - it does not store crashes on disk to report on next startup (whih is rather GOOD idea)
+ * - it does not store crashes on disk to report on next startup (whih is rather GOOD idea...what if it's OOM?)
  * - store crashes and try to upload them via network when it becomes present (on it's own, Analytics services could use offline storage)
  */
 
@@ -33,11 +35,55 @@ public class CrashHandlerUtil implements  java.lang.Thread.UncaughtExceptionHand
     private static final String APP_CRASH_THREAD="Thread";
 
     private static boolean logToCustomLog=false;
+    private static boolean restartOnCrash=false;
 
+    private static final int INITTIAL_CAPACITY=37;
+    private static Map<String,Object> eventInfo=new HashMap<>(INITTIAL_CAPACITY);
+
+    /**
+     * Should we restart on crash?
+     * @return
+     */
+    public static boolean isRestartOnCrash() {
+        return restartOnCrash;
+    }
+
+    /**
+     * Enables/disables restart on crash (intentForRestart must be set TOO)
+     * @param restartOnCrash
+     */
+    public static void setRestartOnCrash(boolean restartOnCrash) {
+        CrashHandlerUtil.restartOnCrash = restartOnCrash;
+    }
+
+    /**
+     * Returns intent used for restart on crash
+     * @return
+     */
+    public Intent getIntentForRestart() {
+        return intentForRestart;
+    }
+
+    /**
+     * Sets intent used for restart
+     * @param intentForRestart
+     */
+    public void setIntentForRestart(Intent intentForRestart) {
+        this.intentForRestart = intentForRestart;
+    }
+
+    /**
+     * Is sending logs to CustomLog ok?
+     * @return
+     */
     public static boolean isLoggingEnabled() {
         return logToCustomLog;
     }
 
+    /**
+     * Enables/disables logging to CustomLog
+     * @param isLog
+     */
     public static void setLoggingEnabled(boolean isLog) {
         logToCustomLog=isLog;
     }
@@ -47,10 +93,12 @@ public class CrashHandlerUtil implements  java.lang.Thread.UncaughtExceptionHand
         setLoggingEnabled(isLog);
     }
 
-    private static final int INITTIAL_CAPACITY=37;
-    private static Map<String,Object> eventInfo=new HashMap<>(INITTIAL_CAPACITY);
 
-    public CrashHandlerUtil(Context context) {
+    /**
+     * Constructs this handler
+     * @param context
+     */
+    private CrashHandlerUtil(Context context) {
         this.oldHandler=Thread.getDefaultUncaughtExceptionHandler();
         this.context=context;
         if (isLoggingEnabled()) {
@@ -58,10 +106,19 @@ public class CrashHandlerUtil implements  java.lang.Thread.UncaughtExceptionHand
         }
     }
 
+    /**
+     * Returns instance of this class
+     * @return
+     */
     public static CrashHandlerUtil getInstance() {
         return instance;
     }
 
+    /**
+     * Installs exception handler.
+     * Main entry point
+     * @param context - app context to use
+     */
     public static void installExceptionHandler(Context context) {
         synchronized (TAG) {
             if (instance==null) {
@@ -70,11 +127,26 @@ public class CrashHandlerUtil implements  java.lang.Thread.UncaughtExceptionHand
             Thread.setDefaultUncaughtExceptionHandler(instance);
         }
     }
+
+    /**
+     * Installs handler and sets intent to restart in one operation (also enables restarting)
+     * @param context
+     * @param intentForRestart
+     */
     public static void installExceptionHandler(Context context,Intent intentForRestart) {
         intentForRestart=intentForRestart;
+        restartOnCrash=true;
         installExceptionHandler(context);
     }
 
+    /**
+     * Reports crash
+     * Made public because of (planned) other uses)
+     * It's VERY good idea for caller   of this functions to catch any and all exceptions from it
+     * even if it's 'regular custome' will ignore exceptions  anyway
+     * @param t - Thread
+     * @param e - Throwable
+     */
     public static void reportCrash(Thread t, Throwable e) {
         StringWriter sw2=new StringWriter();
         joinStackTrace(e,sw2);
@@ -113,7 +185,6 @@ public class CrashHandlerUtil implements  java.lang.Thread.UncaughtExceptionHand
     public void uncaughtException(Thread t, Throwable e) {
         try {
             reportCrash(t,e);
-
         } catch (Throwable inner) {
             Log.e(TAG,"Crash in crash handler!!!");
             if (isLoggingEnabled()) {
@@ -121,11 +192,18 @@ public class CrashHandlerUtil implements  java.lang.Thread.UncaughtExceptionHand
             }
         }
         if (intentForRestart!=null) {
-            if (isLoggingEnabled()) {
-                CustomLog.d(TAG,"IntentForRestart is not null - restarting");
+            if (restartOnCrash) {
+                if (isLoggingEnabled()) {
+                    CustomLog.d(TAG,"IntentForRestart is not null - restarting");
+                }
+                context.startActivity(intentForRestart);
+                //System.exit(1);
+            } else {
+                if (isLoggingEnabled()) {
+                    CustomLog.d(TAG,"IntentForRestart is not null but restartOnCrash is false - not restarting");
+                }
+
             }
-            context.startActivity(intentForRestart);
-            //System.exit(1);
         }
         if (oldHandler!=null) {
             if (isLoggingEnabled()) {
