@@ -473,6 +473,43 @@ public class CoreUtils {
     }
 
     /**
+     * Report event to analytics but do it NOW (and block main thread
+     * It's assumed that analytics libs are initialized
+     * @param event event name
+     * @param eventAttributes attributes to send with event
+     *
+     */
+    public static void reportAnalyticsEventSync(String event, Map<String, Object> eventAttributes) {
+        //add super attributes
+        Map<String, Object> attributes=new HashMap<String, Object>();
+        if (eventAttributes!=null) {
+            attributes.putAll(eventAttributes);
+        }
+        attributes.putAll(superAttributes);
+
+        //send event to  Yandex.Metrica
+        if (analytics_YandexMetricaActive) {
+            YandexMetrica.reportEvent(event,attributes);
+        }
+        //Convert attributes for Amplitude and Mixpanel
+        try {
+            JSONObject props = new JSONObject();
+            for (String key:attributes.keySet()) {
+                props.put(key,attributes.get(key));
+            }
+
+            if (analytics_AmplitudeActive) {
+                Amplitude.getInstance().logEventSync(event,props);
+            }
+
+            //WARNING!. Mixpanel has rather low free limits!
+            //AppController.getInstance().getMixpanel().track(event);
+        }  catch (JSONException e) {
+            CustomLog.logException(e);
+        }
+        //TODO: also write to (encrypted) log file
+    }
+    /**
      * Reports YandexMetrica's userProfile
      * @see https://tech.yandex.ru/appmetrica/doc/mobile-sdk-dg/concepts/android-methods-docpage/
      * @param userProfile
