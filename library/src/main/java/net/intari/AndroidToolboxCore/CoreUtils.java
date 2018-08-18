@@ -362,15 +362,18 @@ public class CoreUtils {
      * @param locationTracking
      * @param firstLaunchIsUpdate
      * @param withCrashReporting
+     * @param autoTracking
      */
-    public static void initYandexMetrica(Application app,String apiKey,boolean locationTracking,boolean firstLaunchIsUpdate,boolean withCrashReporting) {
+    public static void initYandexMetrica(Application app,String apiKey,boolean locationTracking,boolean firstLaunchIsUpdate,boolean withCrashReporting,boolean autoTracking) {
         // Инициализация AppMetrica SDK
         YandexMetricaConfig.Builder configBuilder = YandexMetricaConfig.newConfigBuilder(apiKey);
         configBuilder.withCrashReporting(withCrashReporting);//disable native crash reporting - we have crashlytics
         configBuilder.withLocationTracking(locationTracking);
         configBuilder.handleFirstActivationAsUpdate(firstLaunchIsUpdate);
         YandexMetrica.activate(app.getApplicationContext(), configBuilder.build());
-        YandexMetrica.enableActivityAutoTracking(app);
+        if (autoTracking) {
+            YandexMetrica.enableActivityAutoTracking(app);
+        }
     }
 
     /**
