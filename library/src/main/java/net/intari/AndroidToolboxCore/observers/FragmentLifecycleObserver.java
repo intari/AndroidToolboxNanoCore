@@ -31,8 +31,8 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
     private static int started;
     private static int stopped;
 
-    private Map<Fragment,Long> fragmentStartedMap=new HashMap<>();
-    private Map<Fragment,Long> fragmentResumedMap=new HashMap<>();
+    private TreeMap<Fragment,Long> fragmentStartedMap=new TreeMap<>();
+    private TreeMap<Fragment,Long> fragmentResumedMap=new TreeMap<>();
 
     /**
      * Called right before the fragment's {@link Fragment#onAttach(Context)} method is called.
@@ -174,7 +174,7 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
             CustomLog.d(TAG,f.getClass().getSimpleName()+" resumed");
         }
         if (CoreUtils.isReportLifecycleEventsForAnalytics()) {
-            Map<String, Object> eventAttributes=new TreeMap<String, Object>();
+            TreeMap<String, Object> eventAttributes=new TreeMap<String, Object>();
             eventAttributes.put("fragment",f.getClass().getSimpleName());
             eventAttributes.put("fragmentFullName",f.getClass().getCanonicalName());
             switch (CoreUtils.getReportLifecycleForAnalyticsAs()) {
@@ -215,7 +215,7 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
             return;
         }
         if (CoreUtils.isReportLifecycleEventsForAnalytics()) {
-            Map<String, Object> eventAttributes=new TreeMap<String, Object>();
+            TreeMap<String, Object> eventAttributes=new TreeMap<String, Object>();
             eventAttributes.put("fragment",f.getClass().getSimpleName());
             eventAttributes.put("fragmentFullName",f.getClass().getCanonicalName());
             eventAttributes.put("timePassedInSeconds",timePassed);

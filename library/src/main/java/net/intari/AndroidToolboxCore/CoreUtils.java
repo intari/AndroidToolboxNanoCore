@@ -218,7 +218,7 @@ public class CoreUtils {
         return Looper.getMainLooper().equals(Looper.myLooper());
     }
 
-    private static  Map<String, Object> superAttributes = new TreeMap<String, Object>();
+    private static  TreeMap<String, Object> superAttributes = new TreeMap<String, Object>();
 
     private static boolean analytics_YandexMetricaActive = false;
 
@@ -243,7 +243,7 @@ public class CoreUtils {
 
     public static void reportScreenStart(String screenName) {
         screenStart = System.currentTimeMillis();
-        Map<String,Object> eventProperties=new TreeMap<>();
+        TreeMap<String,Object> eventProperties=new TreeMap<>();
         eventProperties.put("screenName",screenName);
         reportAnalyticsEvent("screenStart",eventProperties);
     }
@@ -251,7 +251,7 @@ public class CoreUtils {
     public static void reportScreenStop(String screenName) {
         long screenStop = System.currentTimeMillis();
         long elaspedTime = (screenStop-screenStart)/Constants.MS_PER_SECOND;
-        Map<String,Object> eventProperties=new TreeMap<>();
+        TreeMap<String,Object> eventProperties=new TreeMap<>();
         eventProperties.put("screenName",screenName);
         eventProperties.put("timeTook",elaspedTime);
         reportAnalyticsEvent("screenStop",eventProperties);
@@ -442,13 +442,25 @@ public class CoreUtils {
     /**
      * Report event to analytics
      * It's assumed that analytics libs are initialized
-     * @param event event name
-     * @param eventAttributes attributes to send with event
-     *
+     * @param event
+     * @param eventAttributes - Map<String, Object> attributes to send with event
      */
     public static void reportAnalyticsEvent(String event, Map<String, Object> eventAttributes) {
+        TreeMap<String, Object> treeMap=new TreeMap<String, Object>();
+        treeMap.putAll(eventAttributes);
+        reportAnalyticsEvent(event,treeMap);
+
+    }
+    /**
+     * Report event to analytics
+     * It's assumed that analytics libs are initialized
+     * @param event event name
+     * @param eventAttributes - TreeMap<String, Object> attributes to send with event
+     *
+     */
+    public static void reportAnalyticsEvent(String event, TreeMap<String, Object> eventAttributes) {
         //add super attributes
-        Map<String, Object> attributes=new TreeMap<String, Object>();
+        TreeMap<String, Object> attributes=new TreeMap<String, Object>();
         if (eventAttributes!=null) {
             attributes.putAll(eventAttributes);
         }
@@ -478,15 +490,28 @@ public class CoreUtils {
     }
 
     /**
+     *
+     * Report event to analytics but do it NOW (and block main thread
+     * It's assumed that analytics libs are initialized
+     * @param event event name
+     * @param eventAttributes attributes to send with event
+     */
+    public static void reportAnalyticsEventSync(String event, Map<String, Object> eventAttributes) {
+        TreeMap<String, Object> treeMap=new TreeMap<String, Object>();
+        treeMap.putAll(eventAttributes);
+        reportAnalyticsEventSync(event,treeMap);
+
+    }
+    /**
      * Report event to analytics but do it NOW (and block main thread
      * It's assumed that analytics libs are initialized
      * @param event event name
      * @param eventAttributes attributes to send with event
      *
      */
-    public static void reportAnalyticsEventSync(String event, Map<String, Object> eventAttributes) {
+    public static void reportAnalyticsEventSync(String event, TreeMap<String, Object> eventAttributes) {
         //add super attributes
-        Map<String, Object> attributes=new TreeMap<String, Object>();
+        TreeMap<String, Object> attributes=new TreeMap<String, Object>();
         if (eventAttributes!=null) {
             attributes.putAll(eventAttributes);
         }
@@ -541,7 +566,7 @@ public class CoreUtils {
      * @param dob_day - value of special attribute 'year of birth' (use NO_DOB_DAY if none known)
      * @param dob_calendar - value of special attribute 'calendar' (used as way to get date of birth) (use null if none known)
      */
-    public static void reportProfile(Map<String, Object> userAttributes, String name, Gender gender,
+    public static void reportProfile(TreeMap<String, Object> userAttributes, String name, Gender gender,
                                      int age, int dob_year, int dob_month, int dob_day, Calendar dob_calendar) {
 
         //TODO:age/dob support
@@ -663,7 +688,7 @@ public class CoreUtils {
      * @param dob_day - value of special attribute 'year of birth' (use NO_DOB_DAY if none known)
      * @param dob_calendar - value of special attribute 'calendar' (used as way to get date of birth) (use null if none known)
      */
-    public static void reportProfileIfUndefined(Map<String, Object> userAttributes,String name,Gender gender,
+    public static void reportProfileIfUndefined(TreeMap<String, Object> userAttributes,String name,Gender gender,
                                                 int age, int dob_year, int dob_month, int dob_day, Calendar dob_calendar ) {
         UserProfile.Builder builder=com.yandex.metrica.profile.UserProfile.newBuilder();
 

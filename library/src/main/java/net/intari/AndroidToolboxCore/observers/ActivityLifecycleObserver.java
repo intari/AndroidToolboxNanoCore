@@ -29,7 +29,7 @@ public class ActivityLifecycleObserver implements Application.ActivityLifecycleC
     private long actStarted=0L;
     private long actResumed=0L;
 
-    Map<String,String> result=new HashMap<>();
+    TreeMap<String,String> result=new TreeMap<>();
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class ActivityLifecycleObserver implements Application.ActivityLifecycleC
             CustomLog.d(TAG,activity.getClass().getSimpleName()+" was resumed");
         }
         if (CoreUtils.isReportLifecycleEventsForAnalytics()) {
-            Map<String, Object> eventAttributes=new TreeMap<String, Object>();
+            TreeMap<String, Object> eventAttributes=new TreeMap<String, Object>();
             eventAttributes.put("activity",activity.getClass().getSimpleName());
             eventAttributes.put("activityFullName",activity.getClass().getCanonicalName());
             switch (CoreUtils.getReportLifecycleForAnalyticsAs()) {
@@ -95,7 +95,7 @@ public class ActivityLifecycleObserver implements Application.ActivityLifecycleC
             return;
         }
         if (CoreUtils.isReportLifecycleEventsForAnalytics()) {
-            Map<String, Object> eventAttributes=new TreeMap<String, Object>();
+            TreeMap<String, Object> eventAttributes=new TreeMap<String, Object>();
             eventAttributes.put("activity",activity.getClass().getSimpleName());
             eventAttributes.put("activityFullName",activity.getClass().getCanonicalName());
             eventAttributes.put("timePassedInSeconds",timePassed);

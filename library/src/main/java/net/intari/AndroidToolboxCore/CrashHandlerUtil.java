@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by Dmitriy Kazimirov on 17.08.2018.
@@ -38,7 +39,7 @@ public class CrashHandlerUtil implements  java.lang.Thread.UncaughtExceptionHand
     private static boolean restartOnCrash=false;
 
     private static final int INITTIAL_CAPACITY=37;
-    private static Map<String,Object> eventInfo=new HashMap<>(INITTIAL_CAPACITY);
+    private static TreeMap<String,Object> eventInfo=new TreeMap<>();
 
     /**
      * Should we restart on crash?
