@@ -15,6 +15,7 @@ import net.intari.CustomLogger.CustomLog;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 
 public class ActivityLifecycleObserver implements Application.ActivityLifecycleCallbacks {
@@ -64,7 +65,7 @@ public class ActivityLifecycleObserver implements Application.ActivityLifecycleC
             CustomLog.d(TAG,activity.getClass().getSimpleName()+" was resumed");
         }
         if (CoreUtils.isReportLifecycleEventsForAnalytics()) {
-            Map<String, Object> eventAttributes=new HashMap<String, Object>();
+            Map<String, Object> eventAttributes=new TreeMap<String, Object>();
             eventAttributes.put("activity",activity.getClass().getSimpleName());
             eventAttributes.put("activityFullName",activity.getClass().getCanonicalName());
             switch (CoreUtils.getReportLifecycleForAnalyticsAs()) {
@@ -94,7 +95,7 @@ public class ActivityLifecycleObserver implements Application.ActivityLifecycleC
             return;
         }
         if (CoreUtils.isReportLifecycleEventsForAnalytics()) {
-            Map<String, Object> eventAttributes=new HashMap<String, Object>();
+            Map<String, Object> eventAttributes=new TreeMap<String, Object>();
             eventAttributes.put("activity",activity.getClass().getSimpleName());
             eventAttributes.put("activityFullName",activity.getClass().getCanonicalName());
             eventAttributes.put("timePassedInSeconds",timePassed);

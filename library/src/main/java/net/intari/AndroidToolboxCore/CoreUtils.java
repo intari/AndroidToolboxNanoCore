@@ -52,6 +52,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
 
 
@@ -217,7 +218,7 @@ public class CoreUtils {
         return Looper.getMainLooper().equals(Looper.myLooper());
     }
 
-    private static  Map<String, Object> superAttributes = new HashMap<String, Object>();
+    private static  Map<String, Object> superAttributes = new TreeMap<String, Object>();
 
     private static boolean analytics_YandexMetricaActive = false;
 
@@ -242,7 +243,7 @@ public class CoreUtils {
 
     public static void reportScreenStart(String screenName) {
         screenStart = System.currentTimeMillis();
-        Map<String,Object> eventProperties=new HashMap<>();
+        Map<String,Object> eventProperties=new TreeMap<>();
         eventProperties.put("screenName",screenName);
         reportAnalyticsEvent("screenStart",eventProperties);
     }
@@ -250,7 +251,7 @@ public class CoreUtils {
     public static void reportScreenStop(String screenName) {
         long screenStop = System.currentTimeMillis();
         long elaspedTime = (screenStop-screenStart)/Constants.MS_PER_SECOND;
-        Map<String,Object> eventProperties=new HashMap<>();
+        Map<String,Object> eventProperties=new TreeMap<>();
         eventProperties.put("screenName",screenName);
         eventProperties.put("timeTook",elaspedTime);
         reportAnalyticsEvent("screenStop",eventProperties);
@@ -447,7 +448,7 @@ public class CoreUtils {
      */
     public static void reportAnalyticsEvent(String event, Map<String, Object> eventAttributes) {
         //add super attributes
-        Map<String, Object> attributes=new HashMap<String, Object>();
+        Map<String, Object> attributes=new TreeMap<String, Object>();
         if (eventAttributes!=null) {
             attributes.putAll(eventAttributes);
         }
@@ -485,7 +486,7 @@ public class CoreUtils {
      */
     public static void reportAnalyticsEventSync(String event, Map<String, Object> eventAttributes) {
         //add super attributes
-        Map<String, Object> attributes=new HashMap<String, Object>();
+        Map<String, Object> attributes=new TreeMap<String, Object>();
         if (eventAttributes!=null) {
             attributes.putAll(eventAttributes);
         }

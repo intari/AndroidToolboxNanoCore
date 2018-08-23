@@ -17,6 +17,7 @@ import net.intari.CustomLogger.CustomLog;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by Dmitriy Kazimirov on 15.08.2018.
@@ -173,7 +174,7 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
             CustomLog.d(TAG,f.getClass().getSimpleName()+" resumed");
         }
         if (CoreUtils.isReportLifecycleEventsForAnalytics()) {
-            Map<String, Object> eventAttributes=new HashMap<String, Object>();
+            Map<String, Object> eventAttributes=new TreeMap<String, Object>();
             eventAttributes.put("fragment",f.getClass().getSimpleName());
             eventAttributes.put("fragmentFullName",f.getClass().getCanonicalName());
             switch (CoreUtils.getReportLifecycleForAnalyticsAs()) {
@@ -214,7 +215,7 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
             return;
         }
         if (CoreUtils.isReportLifecycleEventsForAnalytics()) {
-            Map<String, Object> eventAttributes=new HashMap<String, Object>();
+            Map<String, Object> eventAttributes=new TreeMap<String, Object>();
             eventAttributes.put("fragment",f.getClass().getSimpleName());
             eventAttributes.put("fragmentFullName",f.getClass().getCanonicalName());
             eventAttributes.put("timePassedInSeconds",timePassed);
