@@ -29,7 +29,6 @@ public class ActivityLifecycleObserver implements Application.ActivityLifecycleC
     private long actStarted=0L;
     private long actResumed=0L;
 
-    TreeMap<String,String> result=new TreeMap<>();
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {

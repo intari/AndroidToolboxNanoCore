@@ -31,8 +31,8 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
     private static int started;
     private static int stopped;
 
-    private TreeMap<Fragment,Long> fragmentStartedMap=new TreeMap<>();
-    private TreeMap<Fragment,Long> fragmentResumedMap=new TreeMap<>();
+    private Map<Fragment,Long> fragmentStartedMap=new HashMap<>();
+    private Map<Fragment,Long> fragmentResumedMap=new HashMap<>();
 
     /**
      * Called right before the fragment's {@link Fragment#onAttach(Context)} method is called.
@@ -215,7 +215,7 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
             return;
         }
         if (CoreUtils.isReportLifecycleEventsForAnalytics()) {
-            TreeMap<String, Object> eventAttributes=new TreeMap<String, Object>();
+            Map<String, Object> eventAttributes=new TreeMap<>();
             eventAttributes.put("fragment",f.getClass().getSimpleName());
             eventAttributes.put("fragmentFullName",f.getClass().getCanonicalName());
             eventAttributes.put("timePassedInSeconds",timePassed);
