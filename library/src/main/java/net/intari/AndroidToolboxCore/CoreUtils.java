@@ -554,6 +554,16 @@ public class CoreUtils {
         }
     }
 
+    public static void reportProfile(Map<String, Object> userAttributes, String name, Gender gender,
+                                     int age, int dob_year, int dob_month, int dob_day, Calendar dob_calendar) {
+
+        TreeMap<String, Object> userAttribs=new TreeMap<String, Object>();
+        if (userAttributes!=null) {
+            userAttribs.putAll(userAttributes);
+        }
+        reportProfile(userAttribs,name,gender,age,dob_year,dob_month,dob_day,dob_calendar);
+    }
+
     /**
      * Report profile
      * only WithValue supported for yandex(not WithValueIfUndefined)
