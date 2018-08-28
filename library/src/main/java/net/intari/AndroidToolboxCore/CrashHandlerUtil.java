@@ -39,7 +39,7 @@ public class CrashHandlerUtil implements  java.lang.Thread.UncaughtExceptionHand
     private static boolean restartOnCrash=false;
 
     private static final int INITTIAL_CAPACITY=37;
-    private static TreeMap<String,Object> eventInfo=new TreeMap<>();
+    private static Map<String,Object> eventInfo=new HashMap<>(INITTIAL_CAPACITY);
 
     /**
      * Should we restart on crash?
@@ -132,12 +132,17 @@ public class CrashHandlerUtil implements  java.lang.Thread.UncaughtExceptionHand
     /**
      * Installs handler and sets intent to restart in one operation (also enables restarting)
      * @param context
-     * @param intentForRestart
+     * @param providedIntentForRestart
      */
-    public static void installExceptionHandler(Context context,Intent intentForRestart) {
-        intentForRestart=intentForRestart;
-        restartOnCrash=true;
-        installExceptionHandler(context);
+    public static void installExceptionHandler(Context context,Intent providedIntentForRestart) {
+        synchronized (TAG) {
+            if (instance==null) {
+                instance=new CrashHandlerUtil(context);
+                instance.setIntentForRestart(providedIntentForRestart);
+            }
+            restartOnCrash=true;
+            Thread.setDefaultUncaughtExceptionHandler(instance);
+        }
     }
 
     /**

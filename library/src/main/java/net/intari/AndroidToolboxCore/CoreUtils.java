@@ -93,6 +93,7 @@ public class CoreUtils {
 
 
     //per https://stackoverflow.com/questions/880365/any-way-to-invoke-a-private-method
+    //does NOT work with @hide methods as of Android 9
     public static Object genericInvokMethod(Object obj, String methodName,
                                             int paramCount, Object... params) {
         Method method;
@@ -120,7 +121,7 @@ public class CoreUtils {
         return requiredObj;
     }
 
-    //add prefix to every map elemement
+    //add prefix to every map element
     public static Map<String,String> addPrefixToMap(Map<String,String> map,String prefix) {
         Map<String,String> result=new HashMap<>();
         for (String key:map.keySet()) {
@@ -134,7 +135,6 @@ public class CoreUtils {
       Supported types:JSONObject, JSONArray,Integer,Long,Double,String
       .toString is called for everything else
       Exception handling is caller's responsibility
-      needed for metadata.music processing
      */
     public static Map<String,String> encodeJSONToMapWithPrefix(JSONObject json,String prefix2) throws JSONException, UnsupportedEncodingException {
         Map<String,String> result=new HashMap<>();
@@ -368,7 +368,7 @@ public class CoreUtils {
     public static void initYandexMetrica(Application app,String apiKey,boolean locationTracking,boolean firstLaunchIsUpdate,boolean withCrashReporting,boolean autoTracking) {
         // Инициализация AppMetrica SDK
         YandexMetricaConfig.Builder configBuilder = YandexMetricaConfig.newConfigBuilder(apiKey);
-        configBuilder.withCrashReporting(withCrashReporting);//disable native crash reporting - we have crashlytics
+        configBuilder.withCrashReporting(withCrashReporting);
         configBuilder.withLocationTracking(locationTracking);
         configBuilder.handleFirstActivationAsUpdate(firstLaunchIsUpdate);
         YandexMetrica.activate(app.getApplicationContext(), configBuilder.build());
@@ -439,18 +439,7 @@ public class CoreUtils {
         reportAnalyticsEvent(event,null);
     }
 
-    /**
-     * Report event to analytics
-     * It's assumed that analytics libs are initialized
-     * @param event
-     * @param eventAttributes - Map<String, Object> attributes to send with event
-     */
-    public static void reportAnalyticsEvent(String event, Map<String, Object> eventAttributes) {
-        TreeMap<String, Object> treeMap=new TreeMap<String, Object>();
-        treeMap.putAll(eventAttributes);
-        reportAnalyticsEvent(event,treeMap);
 
-    }
     /**
      * Report event to analytics
      * It's assumed that analytics libs are initialized
@@ -458,7 +447,7 @@ public class CoreUtils {
      * @param eventAttributes - TreeMap<String, Object> attributes to send with event
      *
      */
-    public static void reportAnalyticsEvent(String event, TreeMap<String, Object> eventAttributes) {
+    public static void reportAnalyticsEvent(String event, Map<String, Object> eventAttributes) {
         //add super attributes
         TreeMap<String, Object> attributes=new TreeMap<String, Object>();
         if (eventAttributes!=null) {
@@ -489,27 +478,15 @@ public class CoreUtils {
         //TODO: also write to (encrypted) log file
     }
 
+
     /**
-     *
      * Report event to analytics but do it NOW (and block main thread
      * It's assumed that analytics libs are initialized
      * @param event event name
      * @param eventAttributes attributes to send with event
+     *
      */
     public static void reportAnalyticsEventSync(String event, Map<String, Object> eventAttributes) {
-        TreeMap<String, Object> treeMap=new TreeMap<String, Object>();
-        treeMap.putAll(eventAttributes);
-        reportAnalyticsEventSync(event,treeMap);
-
-    }
-    /**
-     * Report event to analytics but do it NOW (and block main thread
-     * It's assumed that analytics libs are initialized
-     * @param event event name
-     * @param eventAttributes attributes to send with event
-     *
-     */
-    public static void reportAnalyticsEventSync(String event, TreeMap<String, Object> eventAttributes) {
         //add super attributes
         TreeMap<String, Object> attributes=new TreeMap<String, Object>();
         if (eventAttributes!=null) {
@@ -1279,6 +1256,7 @@ public class CoreUtils {
      * <code>printStackTrace(PrintWriter)</code> method
      * <p>
      * Credit: https://commons.apache.org/proper/commons-lang/apidocs/src-html/org/apache/commons/lang3/exception/ExceptionUtils.html
+     * See also joinStackTrace in CrashHandlerUtil - it handles 'caused by' case
      */
     public static String getStackTrace(final Throwable throwable) {
         final StringWriter sw = new StringWriter();
