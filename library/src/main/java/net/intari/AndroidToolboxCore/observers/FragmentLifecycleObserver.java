@@ -47,7 +47,7 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
     public void onFragmentPreAttached(FragmentManager fm, Fragment f, Context context) {
         super.onFragmentPreAttached(fm, f, context);
         if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.d(TAG,f.getClass().getSimpleName()+" was pre-attached to "+context);
+            CustomLog.l(TAG,f.getClass().getSimpleName()+" was pre-attached to "+context);
         }
     }
 
@@ -63,7 +63,7 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
     public void onFragmentAttached(FragmentManager fm, Fragment f, Context context) {
         super.onFragmentAttached(fm, f, context);
         if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.d(TAG,f.getClass().getSimpleName()+" was attached to "+context);
+            CustomLog.l(TAG,f.getClass().getSimpleName()+" was attached to "+context);
         }
     }
 
@@ -80,7 +80,7 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
     public void onFragmentPreCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {
         super.onFragmentPreCreated(fm, f, savedInstanceState);
         if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.d(TAG,f.getClass().getSimpleName()+" was pre-created,savedInstanceState was:"+savedInstanceState);
+            CustomLog.l(TAG,f.getClass().getSimpleName()+" was pre-created,savedInstanceState was:"+savedInstanceState);
         }
     }
 
@@ -97,7 +97,7 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
     public void onFragmentCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {
         super.onFragmentCreated(fm, f, savedInstanceState);
         if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.d(TAG,f.getClass().getSimpleName()+" was created,savedInstanceState was:"+savedInstanceState);
+            CustomLog.l(TAG,f.getClass().getSimpleName()+" was created,savedInstanceState was:"+savedInstanceState);
         }
     }
 
@@ -114,7 +114,7 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
     public void onFragmentActivityCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {
         super.onFragmentActivityCreated(fm, f, savedInstanceState);
         if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.d(TAG,f.getClass().getSimpleName()+",onActivityCreated done, savedInstanceState was:"+savedInstanceState);
+            CustomLog.l(TAG,f.getClass().getSimpleName()+",onActivityCreated done, savedInstanceState was:"+savedInstanceState);
         }
 
     }
@@ -132,7 +132,7 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
     public void onFragmentViewCreated(FragmentManager fm, Fragment f, View v, Bundle savedInstanceState) {
         super.onFragmentViewCreated(fm, f, v, savedInstanceState);
         if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.d(TAG,f.getClass().getSimpleName()+",onCreateView done, savedInstanceState was:"+savedInstanceState);
+            CustomLog.l(TAG,f.getClass().getSimpleName()+",onCreateView done, savedInstanceState was:"+savedInstanceState);
         }
 
     }
@@ -151,7 +151,7 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
         fragmentStartedMap.put(f,System.currentTimeMillis());
 
         if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.d(TAG,f.getClass().getSimpleName()+" started");
+            CustomLog.l(TAG,f.getClass().getSimpleName()+" started");
         }
 
     }
@@ -171,7 +171,7 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
         fragmentResumedMap.put(f,System.currentTimeMillis());
 
         if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.d(TAG,f.getClass().getSimpleName()+" resumed");
+            CustomLog.l(TAG,f.getClass().getSimpleName()+" resumed");
         }
         if (CoreUtils.isReportLifecycleEventsForAnalytics()) {
             TreeMap<String, Object> eventAttributes=new TreeMap<String, Object>();
@@ -209,7 +209,7 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
         }
         long timePassed=(stopTime-startTime)/ Constants.MS_PER_SECOND;
         if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.d(TAG,f.getClass().getSimpleName()+" paused after "+timePassed+" seconds");
+            CustomLog.l(TAG,f.getClass().getSimpleName()+" paused after "+timePassed+" seconds");
         }
         if (CoreUtils.isReportLifecycleEventsForAnalytics_OnlyStart()) {
             return;
@@ -255,7 +255,7 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
         long timePassed=(stopTime-startTime)/ Constants.MS_PER_SECOND;
 
         if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.d(TAG,f.getClass().getSimpleName()+" stopped after "+timePassed+" seconds");
+            CustomLog.l(TAG,f.getClass().getSimpleName()+" stopped after "+timePassed+" seconds");
         }
 
     }
@@ -272,7 +272,7 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
     public void onFragmentSaveInstanceState(FragmentManager fm, Fragment f, Bundle outState) {
         super.onFragmentSaveInstanceState(fm, f, outState);
         if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.d(TAG,f.getClass().getSimpleName()+",onSaveInstanceState");
+            CustomLog.l(TAG,f.getClass().getSimpleName()+",onSaveInstanceState");
         }
     }
 
@@ -287,7 +287,7 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
     public void onFragmentViewDestroyed(FragmentManager fm, Fragment f) {
         super.onFragmentViewDestroyed(fm, f);
         if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.d(TAG,f.getClass().getSimpleName()+",onDestroyView");
+            CustomLog.l(TAG,f.getClass().getSimpleName()+",onDestroyView");
         }
 
     }
@@ -303,7 +303,7 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
     public void onFragmentDestroyed(FragmentManager fm, Fragment f) {
         super.onFragmentDestroyed(fm, f);
         if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.d(TAG,f.getClass().getSimpleName()+",onDestroy(ed)");
+            CustomLog.l(TAG,f.getClass().getSimpleName()+",onDestroy(ed)");
         }
 
     }
@@ -319,7 +319,7 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
     public void onFragmentDetached(FragmentManager fm, Fragment f) {
         super.onFragmentDetached(fm, f);
         if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.d(TAG,f.getClass().getSimpleName()+",onDetach(ed)");
+            CustomLog.l(TAG,f.getClass().getSimpleName()+",onDetach(ed)");
         }
     }
 }

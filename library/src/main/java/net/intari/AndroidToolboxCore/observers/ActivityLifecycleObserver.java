@@ -15,7 +15,6 @@ import net.intari.CustomLogger.CustomLog;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 
 public class ActivityLifecycleObserver implements Application.ActivityLifecycleCallbacks {
@@ -33,18 +32,18 @@ public class ActivityLifecycleObserver implements Application.ActivityLifecycleC
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
         if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.d(TAG,activity.getClass().getSimpleName()+" was created");
+            CustomLog.v(TAG,activity.getClass().getSimpleName()+" was created");
         }
 
         if (activity instanceof AppCompatActivity) {
             if (CoreUtils.isReportLifecycleEventsForDebug()) {
-                CustomLog.d(TAG,activity.getClass().getSimpleName()+" is AppCompat activity so we should have fragment manager");
+                CustomLog.v(TAG,activity.getClass().getSimpleName()+" is AppCompat activity so we should have fragment manager");
             }
             FragmentManager fragmentManager=((AppCompatActivity) activity).getSupportFragmentManager();
             fragmentManager.registerFragmentLifecycleCallbacks(new FragmentLifecycleObserver(),true);
         } else {
             if (CoreUtils.isReportLifecycleEventsForDebug()) {
-                CustomLog.d(TAG,activity.getClass().getSimpleName()+" is NOT AppCompat activity so no supportFragmentManager support");
+                CustomLog.v(TAG,activity.getClass().getSimpleName()+" is NOT AppCompat activity so no supportFragmentManager support");
             }
         }
     }
@@ -52,7 +51,7 @@ public class ActivityLifecycleObserver implements Application.ActivityLifecycleC
     @Override
     public void onActivityDestroyed(Activity activity) {
         if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.d(TAG,activity.getClass().getSimpleName()+" was destroyed");
+            CustomLog.v(TAG,activity.getClass().getSimpleName()+" was destroyed");
         }
     }
 
@@ -61,10 +60,10 @@ public class ActivityLifecycleObserver implements Application.ActivityLifecycleC
         ++resumed;
         actResumed = System.currentTimeMillis();
         if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.d(TAG,activity.getClass().getSimpleName()+" was resumed");
+            CustomLog.v(TAG,activity.getClass().getSimpleName()+" was resumed");
         }
         if (CoreUtils.isReportLifecycleEventsForAnalytics()) {
-            TreeMap<String, Object> eventAttributes=new TreeMap<String, Object>();
+            Map<String, Object> eventAttributes=new HashMap<String, Object>();
             eventAttributes.put("activity",activity.getClass().getSimpleName());
             eventAttributes.put("activityFullName",activity.getClass().getCanonicalName());
             switch (CoreUtils.getReportLifecycleForAnalyticsAs()) {
@@ -88,13 +87,13 @@ public class ActivityLifecycleObserver implements Application.ActivityLifecycleC
         long stopTime= System.currentTimeMillis();
         long timePassed=(stopTime-actResumed)/ Constants.MS_PER_SECOND;
         if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.d(TAG,activity.getClass().getSimpleName()+" was paused after "+timePassed+" seconds");
+            CustomLog.v(TAG,activity.getClass().getSimpleName()+" was paused after "+timePassed+" seconds");
         }
         if (CoreUtils.isReportLifecycleEventsForAnalytics_OnlyStart()) {
             return;
         }
         if (CoreUtils.isReportLifecycleEventsForAnalytics()) {
-            TreeMap<String, Object> eventAttributes=new TreeMap<String, Object>();
+            Map<String, Object> eventAttributes=new HashMap<String, Object>();
             eventAttributes.put("activity",activity.getClass().getSimpleName());
             eventAttributes.put("activityFullName",activity.getClass().getCanonicalName());
             eventAttributes.put("timePassedInSeconds",timePassed);
@@ -118,7 +117,7 @@ public class ActivityLifecycleObserver implements Application.ActivityLifecycleC
     @Override
     public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
         if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.d(TAG,activity.getClass().getSimpleName()+" was saving instance state,state:"+outState);
+            CustomLog.v(TAG,activity.getClass().getSimpleName()+" was saving instance state,state:"+outState);
         }
 
     }
@@ -128,7 +127,7 @@ public class ActivityLifecycleObserver implements Application.ActivityLifecycleC
         ++started;
         actStarted =  System.currentTimeMillis();
         if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.d(TAG,activity.getClass().getSimpleName()+" was started");
+            CustomLog.v(TAG,activity.getClass().getSimpleName()+" was started");
         }
     }
 
@@ -138,7 +137,7 @@ public class ActivityLifecycleObserver implements Application.ActivityLifecycleC
         long stopTime= System.currentTimeMillis();
         long timePassed=(stopTime-actStarted)/ Constants.MS_PER_SECOND;
         if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.d(TAG,activity.getClass().getSimpleName()+" was stopped after "+timePassed+" seconds");
+            CustomLog.v(TAG,activity.getClass().getSimpleName()+" was stopped after "+timePassed+" seconds");
         }
     }
 
