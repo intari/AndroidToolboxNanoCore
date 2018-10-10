@@ -3,7 +3,7 @@
 buildscript {
     ext.kotlin_version = '1.2.71'
     ext.android_support_version = '27.1.1'
-    ext.kotlin_coroutines_version = '0.24.0'
+    ext.kotlin_coroutines_version = '0.30.2'
     ext.architectureComponentsVersion = "1.1.1"
 
     repositories {
