@@ -1,30 +1,24 @@
-package net.intari.AndroidToolboxCore;
+package net.intari.AndroidToolboxNanoCore;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentManager.FragmentLifecycleCallbacks;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 
 /**
  * Created by Dmitriy Kazimirov on 15.08.2018.
  */
-public class CoreSupportFragmentLifecycleHandler extends FragmentLifecycleCallbacks {
-    public static final String TAG = CoreSupportFragmentLifecycleHandler.class.getSimpleName();
-
-    private static int resumed;
-    private static int paused;
-    private static int started;
-    private static int stopped;
-
-    private long fragmentStarted=0L;
-    private long fragmentResumed=0L;
+@RequiresApi(api = Build.VERSION_CODES.O)
+public class CoreFragmentLifecycleHandler extends FragmentManager.FragmentLifecycleCallbacks {
+    public static final String TAG = CoreFragmentLifecycleHandler.class.getSimpleName();
 
     /**
      * Called right before the fragment's {@link Fragment#onAttach(Context)} method is called.
-     * This is a good time to inject any required dependencies or perform other configuration
-     * for the fragment before any of the fragment's lifecycle methods are invoked.
+     * This is a good time to inject any required dependencies for the fragment before any of
+     * the fragment's lifecycle methods are invoked.
      *
      * @param fm      Host FragmentManager
      * @param f       Fragment changing state
@@ -114,8 +108,6 @@ public class CoreSupportFragmentLifecycleHandler extends FragmentLifecycleCallba
     @Override
     public void onFragmentStarted(FragmentManager fm, Fragment f) {
         super.onFragmentStarted(fm, f);
-        ++started;
-        fragmentStarted =  System.currentTimeMillis();
     }
 
     /**
@@ -128,9 +120,6 @@ public class CoreSupportFragmentLifecycleHandler extends FragmentLifecycleCallba
     @Override
     public void onFragmentResumed(FragmentManager fm, Fragment f) {
         super.onFragmentResumed(fm, f);
-        ++resumed;
-        fragmentResumed = System.currentTimeMillis();
-
     }
 
     /**
@@ -143,10 +132,6 @@ public class CoreSupportFragmentLifecycleHandler extends FragmentLifecycleCallba
     @Override
     public void onFragmentPaused(FragmentManager fm, Fragment f) {
         super.onFragmentPaused(fm, f);
-        ++paused;
-        long stopTime= System.currentTimeMillis();
-        long timePassed=(stopTime-fragmentResumed)/ Constants.MS_PER_SECOND;
-
     }
 
     /**
@@ -159,10 +144,6 @@ public class CoreSupportFragmentLifecycleHandler extends FragmentLifecycleCallba
     @Override
     public void onFragmentStopped(FragmentManager fm, Fragment f) {
         super.onFragmentStopped(fm, f);
-        ++stopped;
-        long stopTime= System.currentTimeMillis();
-        long timePassed=(stopTime-fragmentStarted)/ Constants.MS_PER_SECOND;
-
     }
 
     /**

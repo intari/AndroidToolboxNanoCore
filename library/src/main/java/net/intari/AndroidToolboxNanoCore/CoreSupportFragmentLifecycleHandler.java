@@ -1,8 +1,4 @@
-package net.intari.AndroidToolboxCore.observers;
-
-/**
- * Created by Dmitriy Kazimirov on 15.08.2018.
- */
+package net.intari.AndroidToolboxNanoCore;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,28 +7,19 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentManager.FragmentLifecycleCallbacks;
 import android.view.View;
 
-import net.intari.AndroidToolboxCore.Constants;
-import net.intari.AndroidToolboxCore.CoreUtils;
-import net.intari.CustomLogger.CustomLog;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
-
 /**
  * Created by Dmitriy Kazimirov on 15.08.2018.
- * TODO:it IS possible to have mor than one fragment on screen. resume/paused couters don't make sense (until they are really per-fragment)
  */
-public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
-    public static final String TAG = FragmentLifecycleObserver.class.getSimpleName();
+public class CoreSupportFragmentLifecycleHandler extends FragmentLifecycleCallbacks {
+    public static final String TAG = CoreSupportFragmentLifecycleHandler.class.getSimpleName();
 
     private static int resumed;
     private static int paused;
     private static int started;
     private static int stopped;
 
-    private Map<Fragment,Long> fragmentStartedMap=new HashMap<>();
-    private Map<Fragment,Long> fragmentResumedMap=new HashMap<>();
+    private long fragmentStarted=0L;
+    private long fragmentResumed=0L;
 
     /**
      * Called right before the fragment's {@link Fragment#onAttach(Context)} method is called.
@@ -46,9 +33,6 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
     @Override
     public void onFragmentPreAttached(FragmentManager fm, Fragment f, Context context) {
         super.onFragmentPreAttached(fm, f, context);
-        if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.l(TAG,f.getClass().getSimpleName()+" was pre-attached to "+context);
-        }
     }
 
     /**
@@ -62,9 +46,6 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
     @Override
     public void onFragmentAttached(FragmentManager fm, Fragment f, Context context) {
         super.onFragmentAttached(fm, f, context);
-        if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.l(TAG,f.getClass().getSimpleName()+" was attached to "+context);
-        }
     }
 
     /**
@@ -79,9 +60,6 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
     @Override
     public void onFragmentPreCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {
         super.onFragmentPreCreated(fm, f, savedInstanceState);
-        if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.l(TAG,f.getClass().getSimpleName()+" was pre-created,savedInstanceState was:"+savedInstanceState);
-        }
     }
 
     /**
@@ -96,9 +74,6 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
     @Override
     public void onFragmentCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {
         super.onFragmentCreated(fm, f, savedInstanceState);
-        if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.l(TAG,f.getClass().getSimpleName()+" was created,savedInstanceState was:"+savedInstanceState);
-        }
     }
 
     /**
@@ -113,10 +88,6 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
     @Override
     public void onFragmentActivityCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {
         super.onFragmentActivityCreated(fm, f, savedInstanceState);
-        if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.l(TAG,f.getClass().getSimpleName()+",onActivityCreated done, savedInstanceState was:"+savedInstanceState);
-        }
-
     }
 
     /**
@@ -131,10 +102,6 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
     @Override
     public void onFragmentViewCreated(FragmentManager fm, Fragment f, View v, Bundle savedInstanceState) {
         super.onFragmentViewCreated(fm, f, v, savedInstanceState);
-        if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.l(TAG,f.getClass().getSimpleName()+",onCreateView done, savedInstanceState was:"+savedInstanceState);
-        }
-
     }
 
     /**
@@ -147,13 +114,8 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
     @Override
     public void onFragmentStarted(FragmentManager fm, Fragment f) {
         super.onFragmentStarted(fm, f);
-        //++started;
-        fragmentStartedMap.put(f,System.currentTimeMillis());
-
-        if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.l(TAG,f.getClass().getSimpleName()+" started");
-        }
-
+        ++started;
+        fragmentStarted =  System.currentTimeMillis();
     }
 
     /**
@@ -166,29 +128,9 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
     @Override
     public void onFragmentResumed(FragmentManager fm, Fragment f) {
         super.onFragmentResumed(fm, f);
-        //++resumed;
+        ++resumed;
+        fragmentResumed = System.currentTimeMillis();
 
-        fragmentResumedMap.put(f,System.currentTimeMillis());
-
-        if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.l(TAG,f.getClass().getSimpleName()+" resumed");
-        }
-        if (CoreUtils.isReportLifecycleEventsForAnalytics()) {
-            TreeMap<String, Object> eventAttributes=new TreeMap<String, Object>();
-            eventAttributes.put("fragment",f.getClass().getSimpleName());
-            eventAttributes.put("fragmentFullName",f.getClass().getCanonicalName());
-            switch (CoreUtils.getReportLifecycleForAnalyticsAs()) {
-                case JUST_EVENT:
-                    CoreUtils.reportAnalyticsEvent("fragmentResumed",eventAttributes);
-                    break;
-                case PREFIXED_FULL_CLASS_NAME:
-                    CoreUtils.reportAnalyticsEvent(f.getClass().getCanonicalName()+" resumed",eventAttributes);
-                    break;
-                case PREFIXED_SHORT_CLASS_NAME:
-                    CoreUtils.reportAnalyticsEvent(f.getClass().getSimpleName()+" resumed",eventAttributes);
-                    break;
-            }
-        }
     }
 
     /**
@@ -203,35 +145,7 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
         super.onFragmentPaused(fm, f);
         ++paused;
         long stopTime= System.currentTimeMillis();
-        Long startTime=fragmentResumedMap.get(f);
-        if (startTime==null) {
-            startTime=0L;
-        }
-        long timePassed=(stopTime-startTime)/ Constants.MS_PER_SECOND;
-        if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.l(TAG,f.getClass().getSimpleName()+" paused after "+timePassed+" seconds");
-        }
-        if (CoreUtils.isReportLifecycleEventsForAnalytics_OnlyStart()) {
-            return;
-        }
-        if (CoreUtils.isReportLifecycleEventsForAnalytics()) {
-            Map<String, Object> eventAttributes=new TreeMap<>();
-            eventAttributes.put("fragment",f.getClass().getSimpleName());
-            eventAttributes.put("fragmentFullName",f.getClass().getCanonicalName());
-            eventAttributes.put("timePassedInSeconds",timePassed);
-            switch (CoreUtils.getReportLifecycleForAnalyticsAs()) {
-                case JUST_EVENT:
-                    CoreUtils.reportAnalyticsEvent("fragmentPaused", eventAttributes);
-                    break;
-                case PREFIXED_FULL_CLASS_NAME:
-                    CoreUtils.reportAnalyticsEvent(f.getClass().getCanonicalName() + " paused", eventAttributes);
-                    break;
-                case PREFIXED_SHORT_CLASS_NAME:
-                    CoreUtils.reportAnalyticsEvent(f.getClass().getSimpleName() + " paused", eventAttributes);
-                    break;
-            }
-        }
-
+        long timePassed=(stopTime-fragmentResumed)/ Constants.MS_PER_SECOND;
 
     }
 
@@ -247,16 +161,7 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
         super.onFragmentStopped(fm, f);
         ++stopped;
         long stopTime= System.currentTimeMillis();
-        Long startTime=fragmentStartedMap.get(f);
-        if (startTime==null) {
-            startTime=0L;
-        }
-
-        long timePassed=(stopTime-startTime)/ Constants.MS_PER_SECOND;
-
-        if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.l(TAG,f.getClass().getSimpleName()+" stopped after "+timePassed+" seconds");
-        }
+        long timePassed=(stopTime-fragmentStarted)/ Constants.MS_PER_SECOND;
 
     }
 
@@ -271,9 +176,6 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
     @Override
     public void onFragmentSaveInstanceState(FragmentManager fm, Fragment f, Bundle outState) {
         super.onFragmentSaveInstanceState(fm, f, outState);
-        if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.l(TAG,f.getClass().getSimpleName()+",onSaveInstanceState");
-        }
     }
 
     /**
@@ -286,10 +188,6 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
     @Override
     public void onFragmentViewDestroyed(FragmentManager fm, Fragment f) {
         super.onFragmentViewDestroyed(fm, f);
-        if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.l(TAG,f.getClass().getSimpleName()+",onDestroyView");
-        }
-
     }
 
     /**
@@ -302,10 +200,6 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
     @Override
     public void onFragmentDestroyed(FragmentManager fm, Fragment f) {
         super.onFragmentDestroyed(fm, f);
-        if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.l(TAG,f.getClass().getSimpleName()+",onDestroy(ed)");
-        }
-
     }
 
     /**
@@ -318,8 +212,5 @@ public class FragmentLifecycleObserver extends FragmentLifecycleCallbacks {
     @Override
     public void onFragmentDetached(FragmentManager fm, Fragment f) {
         super.onFragmentDetached(fm, f);
-        if (CoreUtils.isReportLifecycleEventsForDebug()) {
-            CustomLog.l(TAG,f.getClass().getSimpleName()+",onDetach(ed)");
-        }
     }
 }

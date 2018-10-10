@@ -1,4 +1,4 @@
-package net.intari.AndroidToolboxCore;
+package net.intari.AndroidToolboxNanoCore;
 
 /**
  * Created by Dmitriy Kazimirov, e-mail:dmitriy.kazimirov@viorsan.com on 30.09.16.

@@ -1,4 +1,4 @@
-# Android Toolbox (Core functions)
+# Android Toolbox (Core functions, Nano edition)
 
 [![Twitter](https://img.shields.io/twitter/url/https/github.com/intari/AndroidToolboxCore.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fintari%2FAndroidToolboxCore)
 
@@ -14,6 +14,8 @@
 [![Read the Docs](https://img.shields.io/readthedocs/androidtoolboxcore.svg)](http://androidtoolboxcore.readthedocs.io/)
 
 
+Nano edition doesn't even link to Yandex.AppMetrica/Amplitude. 
+There will be separate library in future for common analytics logic. 
 
 Tools I usually use in my android apps
 Usage:

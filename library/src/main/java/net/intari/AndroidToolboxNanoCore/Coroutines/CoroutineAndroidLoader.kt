@@ -1,4 +1,4 @@
-package net.intari.AndroidToolboxCore.Coroutines
+package net.intari.AndroidToolboxNanoCore.Coroutines
 
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
@@ -6,7 +6,7 @@ import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.OnLifecycleEvent
 import kotlinx.coroutines.experimental.*
 import kotlinx.coroutines.experimental.android.UI
-import net.intari.AndroidToolboxCore.Extensions.logException
+import net.intari.AndroidToolboxNanoCore.Extensions.logException
 
 /**
  * Created by Dmitriy Kazimirov, e-mail:dmitriy.kazimirov@viorsan.com on 22.01.2018.

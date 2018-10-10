@@ -1,4 +1,4 @@
-package net.intari.AndroidToolboxCore;
+package net.intari.AndroidToolboxNanoCore;
 
 
 /**
