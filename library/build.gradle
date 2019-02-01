@@ -6,11 +6,6 @@ apply plugin: 'kotlin-kapt'
 
 group='net.intari'
 
-kotlin {
-    experimental {
-        coroutines 'enable'
-    }
-}
 
 
 android {

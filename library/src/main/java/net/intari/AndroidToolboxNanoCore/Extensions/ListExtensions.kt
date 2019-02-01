@@ -1,8 +1,6 @@
 package net.intari.AndroidToolboxNanoCore.Extensions
 
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.*
 
 /**
  * Created by Dmitriy Kazimirov on 11/10/2018.
@@ -10,7 +8,7 @@ import kotlinx.coroutines.experimental.runBlocking
 
 
 fun <A, B>List<A>.pmap(f: suspend (A) -> B): List<B> = runBlocking {
-    map { async(CommonPool) { f(it) } }.map { it.await() }
+    map { GlobalScope.async(Dispatchers.IO) { f(it) } }.map { it.await() }
 }
 
 

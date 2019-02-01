@@ -4,8 +4,11 @@ import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.OnLifecycleEvent
-import kotlinx.coroutines.experimental.*
-import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
+import kotlinx.coroutines.newFixedThreadPoolContext
 import net.intari.AndroidToolboxNanoCore.Extensions.logException
 
 /**
@@ -23,14 +26,15 @@ internal class CoroutineLifecycleListener(private val deferred: Deferred<*>) : L
 }
 
 // CoroutineContext running on background threads.
-internal val Background = newFixedThreadPoolContext(Runtime.getRuntime().availableProcessors() * 2, "BackgroundLoader")
+//internal val Background = newFixedThreadPoolContext(Runtime.getRuntime().availableProcessors() * 2, "BackgroundLoader")
 
 /**
  * Creates a lazily started coroutine that runs <code>loader()</code>.
  * The coroutine is automatically cancelled using the CoroutineLifecycleListener.
  */
 fun <T> LifecycleOwner.load(loader: suspend () -> T): Deferred<T> {
-    val deferred = async(context = Background, start = CoroutineStart.LAZY) {
+    val deferred = GlobalScope.async(Dispatchers.Default, start = CoroutineStart.LAZY) {
+
         loader()
     }
 
@@ -43,7 +47,7 @@ fun <T> LifecycleOwner.load(loader: suspend () -> T): Deferred<T> {
  * will call <code>await()</code> and pass the returned value to <code>block()</code>.
  */
 infix fun <T> Deferred<T>.then(block: suspend (T) -> Unit): Job {
-    return launch(context = UI) {
+    return GlobalScope.launch(Dispatchers.Main) {
         try {
             block(this@then.await())
         } catch (e: Exception) {
