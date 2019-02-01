@@ -42,7 +42,7 @@ import java.util.UUID;
 
 /**
  * Support utils for my projects
- * (c) Dmitriy Kazimirov 2015-2018, e-mail:dmitriy.kazimirov@viorsan.com
+ * (c) Dmitriy Kazimirov 2015-2019, e-mail:dmitriy.kazimirov@viorsan.com
  *
  *
  */
