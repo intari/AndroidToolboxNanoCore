@@ -43,6 +43,30 @@ class WriteOnceVal<T>() {
         if (!valueRef.compareAndSet(null, localValue)) {
             throw IllegalStateException("already initialized")
         }
+    }
 
+    /**
+     * Yes, 'writeOnce', updateable(!).
+     * Some use cases require this. Be extemly careful.
+     * This will violate 'val' contract
+     */
+    fun update(value : T) {
+        val localValue = if (value == null) NULL_MASK as T else value
+        val oldValue = valueRef.get()
+        valueRef.set(localValue)
+        /*
+        if (!valueRef.compareAndSet(oldValue, localValue)) {
+            throw IllegalStateException("update doesn't get expected previous state")
+        }
+        */
+    }
+
+    fun ready():Boolean {
+        val localValue = valueRef.get()
+        return when (localValue) {
+            null -> false
+            NULL_MASK -> false
+            else -> true
+        }
     }
 }

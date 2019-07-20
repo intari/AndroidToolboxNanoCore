@@ -27,3 +27,43 @@ fun <A> List<A>.logInfo(name:String,logger:Logger) {
         logger.d { "${item.toString()}" }
     }
 }
+
+
+
+
+fun <T:supportsDebugLogging> List<T>.toShortString(listName:String):String {
+    val sb = StringBuffer()
+    sb.append(listName)
+    sb.append("(")
+    sb.append(this.size)
+    sb.append(" items):(")
+
+    var needComma=false
+    this.forEach {
+        if (needComma)
+            sb.append(",")
+        sb.append(it.toShortString())
+        needComma=true
+    }
+    sb.append(")")
+    return sb.toString()
+}
+
+
+fun <T> List<T>.toString(listName:String):String {
+    var sb = StringBuffer()
+    sb.append(listName)
+    sb.append("(")
+    sb.append(this.size)
+    sb.append(" items):(")
+
+    var needComma=false
+    this.forEach {
+        if (needComma)
+            sb.append(",")
+        sb.append(it)
+        needComma=true
+    }
+    sb.append(")")
+    return sb.toString()
+}

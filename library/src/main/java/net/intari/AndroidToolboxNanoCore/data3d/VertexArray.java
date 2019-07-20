@@ -7,6 +7,8 @@ package net.intari.AndroidToolboxNanoCore.data3d;
 
 import android.opengl.GLES20;
 
+import net.intari.AndroidToolboxNanoCore.Constants;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
