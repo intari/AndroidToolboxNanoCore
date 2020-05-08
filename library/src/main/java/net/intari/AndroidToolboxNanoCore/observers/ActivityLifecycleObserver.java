@@ -6,15 +6,12 @@ package net.intari.AndroidToolboxNanoCore.observers;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.AppCompatActivity;
 
 import net.intari.AndroidToolboxNanoCore.Constants;
 import net.intari.AndroidToolboxNanoCore.CoreUtils;
 import net.intari.CustomLogger.CustomLog;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class ActivityLifecycleObserver implements Application.ActivityLifecycleCallbacks {

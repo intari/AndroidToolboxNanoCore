@@ -15,7 +15,7 @@ import android.location.Location;
 import android.opengl.GLES20;
 import android.os.Build;
 import android.os.Looper;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.ContextThemeWrapper;
 
 
@@ -358,7 +358,7 @@ public class CoreUtils {
      * @param context
      * @param dialog
      */
-    public static void cancelAlertDialogFromSupportLibrary(Context context, android.support.v7.app.AlertDialog dialog) {
+    public static void cancelAlertDialogFromSupportLibrary(Context context, androidx.appcompat.app.AlertDialog dialog) {
         //Can't touch other View of other Activiy..
         //http://stackoverflow.com/questions/23458162/dismiss-progress-dialog-in-another-activity-android
         if (context==null) {
@@ -403,7 +403,7 @@ public class CoreUtils {
      * @param context
      * @param dialog
      */
-    public static void dismissAlertDialogFromSupportLibrary(Context context, android.support.v7.app.AlertDialog dialog) {
+    public static void dismissAlertDialogFromSupportLibrary(Context context, androidx.appcompat.app.AlertDialog dialog) {
         //Can't touch other View of other Activiy..
         //http://stackoverflow.com/questions/23458162/dismiss-progress-dialog-in-another-activity-android
         if (context==null) {

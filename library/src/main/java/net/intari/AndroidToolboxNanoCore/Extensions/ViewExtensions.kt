@@ -1,7 +1,7 @@
 package net.intari.AndroidToolboxNanoCore.Extensions
 
 import android.content.res.Resources
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.View
 
 /**
@@ -77,7 +77,7 @@ fun View.resourceName():String {
  * @param callback - callback
  * @return - false if was clear callback will NOT be run
  */
-fun <T: Fragment> T.tryRunOnUiThread(f: (T) -> Unit): Boolean {
+fun <T: androidx.fragment.app.Fragment> T.tryRunOnUiThread(f: (T) -> Unit): Boolean {
     if (this.isDetached) return false
     val activity = this.activity ?: return false
     if (this.view==null) return false
@@ -85,10 +85,10 @@ fun <T: Fragment> T.tryRunOnUiThread(f: (T) -> Unit): Boolean {
     return true
 }
 
-fun <T: Fragment> T.toShortString(): String {
+fun <T: androidx.fragment.app.Fragment> T.toShortString(): String {
     return "s.${this.javaClass.name}(isDetached:${this.isDetached}, activity:${if (this.activity!=null) "present" else "not present"}), view:${if (this.view!=null) "not null" else "null"})"
 }
 
-inline fun Fragment.runOnUiThreadIfActivity(crossinline f: () -> Unit) {
+inline fun androidx.fragment.app.Fragment.runOnUiThreadIfActivity(crossinline f: () -> Unit) {
     requireActivity().runOnUiThread { f() }
 }

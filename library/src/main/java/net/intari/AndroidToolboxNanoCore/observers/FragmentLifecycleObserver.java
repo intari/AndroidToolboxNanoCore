@@ -6,9 +6,9 @@ package net.intari.AndroidToolboxNanoCore.observers;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentManager.FragmentLifecycleCallbacks;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentManager.FragmentLifecycleCallbacks;
 import android.view.View;
 
 import net.intari.AndroidToolboxNanoCore.Constants;
@@ -17,7 +17,6 @@ import net.intari.CustomLogger.CustomLog;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Created by Dmitriy Kazimirov on 15.08.2018.
